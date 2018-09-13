@@ -12,28 +12,30 @@
 /* ************************************************************************** */
 
 #ifndef LEM_IN_H
-#define LEM_IN_H
+# define LEM_IN_H
 
+# include "../libft/includes/libft.h"
 # include "def.h"
+# include <stdbool.h>
 
-#include <stdlib.h>
-#include <stdio.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 /*
 ** Struct t_room
 **----------------
 ** @param : status 0 room normal, -1 room end, +1 room start
-** @param : hantz a.k.a ants, s'il y a ou pas une fourmis dans la room, 1 = pleine
+** @param : hantz a.k.a ants, 0 = vide 1 = plein
 ** @coord_ : coordonnées x et y de la room
 */
 
 typedef struct	s_room
 {
 	int			status : 2;
-	int			hantz : 1;
+	bool		hantz;
 	int			coord_x;
 	int			coord_y;
-	char 		*name;
+	char		*name;
 }				t_room;
 
 /*
@@ -43,11 +45,19 @@ typedef struct	s_room
 ** @param : tubes tableau de room qui sont les chemin disponibles
 */
 
-typedef struct	s_tube
+typedef struct	s_link
 {
 	int			nb_tubes;
 	t_room		*tubes;
-}				t_tube;
+}				t_link;
 
+bool	check_ifdigit(char *to_check);
+bool	check_ifalphanum(char *to_check);
+int 	check_which(char *str);
+t_room	*ft_parse(int *ants, char **parsed, int nb);
+t_room	*realloc_room(t_room *room, int nb);
+void	aff_room(t_room *room, int nb_room);
+void	free_tab(void	**tab);
+int		check_parse(char **tab, int *ants);
 
 #endif

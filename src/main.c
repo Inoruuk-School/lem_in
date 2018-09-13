@@ -15,11 +15,13 @@
 
 int main(void)
 {
-	t_room *rooms;
+	t_room	*room = NULL;
+	int 	ants;
+	char 	*parsed;
 
-	rooms = malloc(sizeof(t_room) * NB_RMALLOC);
-	if (!rooms)
-		exit(0);
-//	ft_parse();
-	dprintf(1,"toto\n");
+	ants = 0;
+	parsed = ft_strnew(NB_MALLOC);
+	room = ft_parse(&ants, &parsed, 1);
+	dprintf(1, "parsed : %s\nants : %d", parsed, ants);
+	free(room);
 }
