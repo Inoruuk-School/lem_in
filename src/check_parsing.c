@@ -35,7 +35,7 @@ bool	check_room(char *str, int i)
 	while (str[i] && str[i] != ' ')
 		i++;
 	tmp[i] = '\0';
-	if (!check_ifalphanum(tmp) && (i = 0) == 0)
+	if (!check_ifalphanum(tmp) && tmp[0] != 'L' && (i = 0) == 0)
 		check = false;
 	while (tmp[i])
 		i++;
