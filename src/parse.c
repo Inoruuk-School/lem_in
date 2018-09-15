@@ -17,11 +17,11 @@
 void		init_room(char *str, t_room *room, int status, int nb_room)
 {
 	char 	**strtab;
-	int		i;
+	int 	i;
 
+	i = 0;
 	if (!(strtab = ft_strsplit(str, ' ')))
 		exit(0);
-	i = 0;
 	if (check_ifalphanum(strtab[0]) && check_ifdigit(strtab[1]) &&\
 		check_ifdigit(strtab[2]) && !strtab[3])
 	{
@@ -31,56 +31,65 @@ void		init_room(char *str, t_room *room, int status, int nb_room)
 		R_Y(nb_room) = ft_atoi(strtab[2]);
 		R_ANT(nb_room) = false;
 	}
-	free_tab(strtab);
+	while (strtab[i])
+		free(strtab[i++]);
+	free(strtab);
 }
 
-int			fill_room(char **tab, t_room *room, int *ants, int nb_room)
+t_room		*fill_room(char **tab, int *ants, int nb_room, int nb)
 {
+	t_room	*room;
 	int 	start;
 	int 	end;
-	int 	line;
+	int 	l;
 	int 	check;
 
-	line = 0;
+	l = 0;
 	start = 0;
 	end = 0;
-	while (tab[line] && end <= 1 && start <= 1 && (check = check_which(tab[line])) > 0)
+	room = realloc_room(NULL, sizeof(t_room *) * nb * NB_MALLOC);
+	while (tab[l] && end < 2 && start < 2 && (check = check_which(tab[l])) > 0)
 	{
+		if (nb_room >= nb * NB_MALLOC && ++nb)
+		{
+			room = realloc_room(room, nb);
+		}
 		if (check == 1)
-			init_room(tab[line], room, 0, nb_room++);
+			init_room(tab[l], room, 0, nb_room++);
 		else if (check == 2 && start++ == 0)
-			init_room(tab[++line], room, 1, nb_room++);
+			init_room(tab[++l], room, 1, nb_room++);
 		else if (check == 3 && end++ == 0)
-			init_room(tab[++line], room, -1, nb_room++);
+			init_room(tab[++l], room, -1, nb_room++);
 		else if (check == 5 && *ants == 0)
-			*ants = ft_atoi(tab[line]);
+			*ants = ft_atoi(tab[l]);
 		else if (check != 4)
 			break;
-		line++;
+		l++;
 	}
-	return (line);
+	return (room);
 }
 
-t_room		*ft_parse(int *ants, char **parsed, int nb) // a faire le tube apres fill-room
+char 		**create_tab()
 {
-	char	*line;
+	char 	*line;
+	char 	*parsed;
 	char 	**tab;
-	int		i;
 	int 	len;
-	t_room	*room;
+	int 	nb;
 
 	len = 0;
-	room = realloc_room(NULL, 1);
+	nb = 1;
+	parsed = ft_strnew(100);
 	while (get_next_line(0, &line) == 1 && (len += ft_strlen(line)) && line[0])
 	{
-		if (++len >= nb * NB_MALLOC && (nb += 1))
-			*parsed = ft_realloc(*parsed, (nb - 1) * NB_MALLOC, nb * NB_MALLOC);
-		*parsed = ft_strcat(ft_strcat(*parsed, line), "|");
+		if (++len >= nb * 100 && ++nb)
+			parsed = ft_realloc(parsed, (nb - 1) * 100, nb * 100);
+		parsed = ft_strcat(ft_strcat(parsed, line), "|");
 		ft_strdel(&line);
 	}
-	parsed[0][len - 1] = '\0';
-	tab = ft_strsplit(*parsed, '|');
-	i = fill_room(tab, room, ants, 0);
-	free_tab(tab);
-	return (room);
+	if (line)
+		free(line);
+	tab = ft_strsplit(parsed, '|');
+	free(parsed);
+	return (tab);
 }

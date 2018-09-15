@@ -20,52 +20,46 @@ int 	check_tubes(char **tab, int *line)
 	return (-1);
 }
 
-bool	check_room(char *str, int i)
+bool	check_room(char *str)
 {
-	char	*tmp;
+	char 	**tab;
 	bool	check;
 
 	check = true;
-	tmp = ft_strdup(str);
-	while (str[i] && str[i] != ' ')
-		i++;
-	tmp[i] = '\0';
-	while (str[i] && str[i] == ' ')
-		i++;
-	while (str[i] && str[i] != ' ')
-		i++;
-	tmp[i] = '\0';
-	if (!check_ifalphanum(tmp) && tmp[0] != 'L' && (i = 0) == 0)
+	if (!(tab = ft_strsplit(str, ' ')))
+		exit(0);
+	if (!check_ifalphanum(tab[0]) && tab[0][0] != 'L' && tab[0][0] != '#')
 		check = false;
-	while (tmp[i])
-		i++;
-	if (!check_ifdigit(&tmp[++i]))
+	if (!check_ifdigit(tab[1]) && !check_ifdigit(tab[2]))
 		check = false;
-	while (tmp[i])
-		i++;
-	if (!check_ifdigit(&tmp[++i]))
-		check = false;
-	free(tmp);
+	ft_strdel(&tab[0]);
+	ft_strdel(&tab[1]);
+	ft_strdel(&tab[2]);
+	free(tab);
 	return (check);
+
 }
+
+
 /*
 ** Function check_which
 **---------------------
 ** @param str given string to check
 ** @return 1 = room, 0 = tubes, 2 = start, 3 = end, 4 = comment, 5 = ants
 */
+
 int 	check_which(char *str)
 {
-	if (match(str, "* * *") && check_room(str, 0))
-		return (1);
-	else if (match(str, "*-*"))
-		return (0);
-	else if (str[0] == '#' && ft_strstr(str, "##start"))
+	if (str[0] == '#' && ft_strnstr(str, "##start", 7))
 		return (2);
-	else if (str[0] == '#' && ft_strstr(str, "##end"))
+	else if (str[0] == '#' && ft_strnstr(str, "##end", 5))
 		return (3);
 	else if (str[0] == '#')
 		return (4);
+	else if (match(str, "* * *") && check_room(str))
+		return (1);
+	else if (match(str, "*-*"))
+		return (0);
 	else if (check_ifdigit(str))
 		return (5);
 	return (-1);

@@ -1,40 +1,20 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   def.h                                            .::    .:/ .      .::   */
+/*   error.c                                          .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: asiaux <asiaux@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2018/09/01 16:56:58 by asiaux       #+#   ##    ##    #+#       */
-/*   Updated: 2018/09/01 16:56:58 by asiaux      ###    #+. /#+    ###.fr     */
+/*   Created: 2018/09/13 05:13:13 by asiaux       #+#   ##    ##    #+#       */
+/*   Updated: 2018/09/13 05:13:13 by asiaux      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#ifndef DEF_H
-# define DEF_H
+#include "../includes/lem_in.h"
 
-/*
-** nombre de room a malloc
-*/
-
-# define NB_MALLOC 10 // a tester avec petit nombres
-
-/*
-** t_rooms defines
-*/
-
-# define R_STAT(i) room[i].status
-# define R_ANT(i) room[i].hantz
-# define R_Y(i) room[i].coord_y
-# define R_X(i) room[i].coord_x
-# define R_NAME(i) room[i].name
-
-/*
-** t_tube defines
-*/
-
-# define L_NB link->nb_tubes
-# define L_TUBE(i) link->tubes[i]
-
-#endif
+void	error(int er)
+{
+	if (er == 1)
+	dprintf(1, "Error : no command start or/and end\n");
+}

@@ -15,16 +15,13 @@
 
 bool	check_ifdigit(char *to_check)
 {
-	int		i;
 	bool	check;
 
-	i = 0;
 	check = true;
-	while (check && to_check[i] != '\0')
+	while (*to_check && check)
 	{
-		if (!isdigit(to_check[i]))
+		if (!isdigit(*to_check++))
 			check = false;
-		i++;
 	}
 	return (check);
 }
@@ -50,51 +47,46 @@ t_room	*realloc_room(t_room *room, int nb)
 	int			i;
 	t_room		*buff;
 
-	i = 0;
 	nb <= 0 ? nb = 1 : nb;
+	i = 0;
 	if (room)
 	{
-		if (!(buff = (t_room *)malloc(sizeof(t_room) * nb * NB_MALLOC)))
+		if (!(buff = ft_memalloc(sizeof(t_room) * nb * NB_MALLOC)))
 			exit(0);
-		nb = nb <= 1 ? 1 : nb - 1;
-		ft_memcpy(buff, room, sizeof(t_room) * nb * NB_MALLOC);
-		while (i < nb * NB_MALLOC && R_NAME(i))
+		buff = ft_memcpy(buff, room, sizeof(t_room) * --nb * NB_MALLOC);
+		while (i < nb) //probleme
 		{
-			free(R_NAME(i));
-			i++;
+			dprintf(1, "buff : %s\ni : %d nb : %d\n",buff[i].name, i, nb);
+			free(R_NAME(i++));
 		}
 		free(room);
+
 	}
 	else
-		if (!(buff = (t_room *) malloc(sizeof(t_room) * nb * NB_MALLOC)))
+		if (!(buff = ft_memalloc(sizeof(t_room) * nb * NB_MALLOC)))
 			exit(0);
 	return (buff);
 }
 
-void	aff_room(t_room *room, int nb_room) // a changer pour l affichage
-{
-	int i = 0;
-
-	while (i < nb_room)
-	{
-		dprintf(1, "name : %s\n", R_NAME(i));
-		dprintf(1, "status : %d\n", R_STAT(i));
-		dprintf(1, "ants : %d\n", R_ANT(i));
-		dprintf(1, "x : %d\n", R_X(i));
-		dprintf(1, "y : %d\n\n", R_Y(i));
-		i++;
-	}
-}
-
-void	free_tab(void	**tab)
+void	aff_room(t_room *room) // a supprimer
 {
 	int i;
 
 	i = 0;
-	while (tab[i])
+	while (i < 5)
 	{
-		free(tab[i]);
+		dprintf(1, CYN"name : %s\n", R_NAME(i));
+		dprintf(1, "status : %d\n", R_STAT(i));
+		dprintf(1, "ants : %d\n", R_ANT(i));
+		dprintf(1, "x : %d\n", R_X(i));
+		dprintf(1, "y : %d\n\n"RESET, R_Y(i));
 		i++;
 	}
+}
+
+void	free_tab(void **tab)
+{
+	while (*tab)
+		ft_memdel(&*tab++);
 	free(tab);
 }

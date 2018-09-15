@@ -56,8 +56,12 @@ bool	check_ifalphanum(char *to_check);
 int 	check_which(char *str);
 t_room	*ft_parse(int *ants, char **parsed, int nb);
 t_room	*realloc_room(t_room *room, int nb);
-void	aff_room(t_room *room, int nb_room);
-void	free_tab(void	**tab);
+void	aff_room(t_room *room);
+void	free_tab(void **tab);
+void	error(int er);
 int		check_parse(char **tab, int *ants);
+
+t_room		*fill_room(char **tab, int *ants, int nb_room, int nb);
+char 		**create_tab();
 
 #endif
