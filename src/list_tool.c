@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   def.h                                            .::    .:/ .      .::   */
+/*   list_tool.c                                      .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: asiaux <asiaux@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2018/09/01 16:56:58 by asiaux       #+#   ##    ##    #+#       */
-/*   Updated: 2018/09/01 16:56:58 by asiaux      ###    #+. /#+    ###.fr     */
+/*   Created: 2018/09/25 05:47:06 by asiaux       #+#   ##    ##    #+#       */
+/*   Updated: 2018/09/25 05:47:06 by asiaux      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#ifndef DEF_H
-# define DEF_H
+#include "../includes/lem_in.h"
 
-/*
-** t_rooms defines
-*/
+t_link		*new_list(t_room *room)
+{
+	t_link	*tube;
 
-# define R_STAT(i) room[i]->status
-# define R_ANT(i) room[i]->hantz
-# define R_Y(i) room[i]->coord_y
-# define R_X(i) room[i]->coord_x
-# define R_NAME(i) room[i]->name
-
-/*
-** t_tube defines
-*/
-
-# define L_NB link->nb_tubes
-# define L_TUBE(i) link->tubes[i]
-
-# define NB_MALLOC 1
-
-#endif
+	if (!(tube = ft_memalloc(sizeof(t_link *))))
+		return (0);// peut faire autrement??
+	tube->room = room;
+	tube->branch = NULL;
+	return (tube);
+}

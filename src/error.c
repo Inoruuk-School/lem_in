@@ -5,8 +5,8 @@
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: asiaux <asiaux@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2018/09/13 05:13:13 by asiaux       #+#   ##    ##    #+#       */
-/*   Updated: 2018/09/13 05:13:13 by asiaux      ###    #+. /#+    ###.fr     */
+/*   Created: 2018/09/25 00:56:50 by asiaux       #+#   ##    ##    #+#       */
+/*   Updated: 2018/09/25 00:56:50 by asiaux      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,6 +15,7 @@
 
 void	error(int er)
 {
-	if (er == 1)
-	dprintf(1, "Error : no command start or/and end\n");
+	if (!er)
+		ft_printf("error ligne 1 : mauvaise ligne fourmis\n");
+	exit(0);
 }
