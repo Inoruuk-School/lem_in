@@ -12,7 +12,7 @@
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
-
+/*
 t_link		*new_list(t_room *room)
 {
 	t_link	*tube;
@@ -22,4 +22,4 @@ t_link		*new_list(t_room *room)
 	tube->room = room;
 	tube->branch = NULL;
 	return (tube);
-}
+}*/

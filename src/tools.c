@@ -100,14 +100,14 @@ int		get_last_room(t_room **room)
 	return (i);
 }
 
-void	aff_room(t_room **room) // a supprimer
+void	aff_room(t_room **room, int nb_room) // a supprimer
 {
 	int i;
 
 	i = 0;
 	if (room)
 	{
-		while (room[i] && R_NAME(i))
+		while (i < nb_room)
 		{
 			dprintf(1, CYN"name : %s\n", R_NAME(i));
 			dprintf(1, "status : %d\n", R_STAT(i));
@@ -117,4 +117,37 @@ void	aff_room(t_room **room) // a supprimer
 			i++;
 		}
 	}
+}
+
+
+/*
+** Function fill_tube
+**----------------------
+** @param tab
+** @param room
+** @return
+*/
+
+t_link		*fill_tubes(char **tab, t_room **room)
+{
+	t_link		*root;
+	int 		i;
+	int 		j;
+
+	j = 0;
+	i = get_last_room(room);
+	while (!ft_strstr(tab[j], R_NAME(i)))
+		j++;
+	j += 2;
+	while (tab[j])
+	{
+		if (tab[j][0] != '#' && tab[j][0] != 'L' && match(tab[j], "*-*"))
+			dprintf(1, "link : %-15s", tab[j]);
+		if (match(tab[j], "* * *"))
+			return (NULL);
+		dprintf(1, "tab[%d] = %s\n", j ,tab[j]);
+		j++;
+	}
+	root = malloc(500);
+	return (root);
 }

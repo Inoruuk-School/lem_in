@@ -13,93 +13,73 @@
 
 #include "../includes/lem_in.h"
 
-void		init_room(char *str, t_room **room, int status, int nb_room)
+/*
+** Function : check_rooms
+**---------------------------
+** check the names of rooms to see if there is no duplicate
+** @param room
+** @param nb_room
+** @return
+*/
+
+bool	check_rooms(t_room **room, int nb_room)
 {
-	char 	**strtab;
+	bool	check;
 	int 	i;
+	int 	j;
 
 	i = 0;
-	if (!(strtab = ft_strsplit(str, ' ')))
-		exit(0);
-	R_STAT(nb_room) = status;
-	R_NAME(nb_room) = ft_strdup(strtab[0]);
-	R_X(nb_room) = ft_atoi(strtab[1]);
-	R_Y(nb_room) = ft_atoi(strtab[2]);
-	R_ANT(nb_room) = false;
-	while (strtab[i])
-		free(strtab[i++]);
-	free(strtab);
+	check = true;
+	while (i < nb_room && check)
+	{
+		j = i + 1;
+		while (j < nb_room && check)
+		{
+			if (!ft_strcmp(R_NAME(i), R_NAME(j)))
+				check = false;
+			j++;
+		}
+		i++;
+	}
+	return (check);
 }
 
 /*
 ** Function : fill_room
 **-----------------------
 ** @param tab of the lines we GNLed
-** @param ants : number fo ants
 ** @param nb_room : number of room created
-** @param nb : numbers of times the tab of room will be malloc depending on
-** NB_MALLOC
-** check : 1 = room, 0 = tubes, 2 = start, 3 = end, 4 = comment, 5 = ants
+** i : 0 = tubes,1 = room, 2 = start, 3 = end, 4 = comment, 5 = ants
 ** @return the created tab of room
 */
 
-t_room		**fill_room(char **tab, int *ants, int nb_room, int nb)
+t_room		**fill_room(char **tab, int nb_rooms)
 {
 	t_room	**room;
-	int 	s;
-	int 	e;
-	int 	l;
-	int 	check;
+	int 	i;
 
-	l = 0;
-	s = 0;
-	e = 0;
-	room = realloc_room(NULL, nb);
-	while (tab[l] && e < 2 && s < 2 && (check = check_which(tab[l], room)) > 0)
+	i = 0;
+	if (!(room = create_rooms(nb_rooms)))
+		return (NULL);
+	while (*tab && (i = check_which(*tab)))
 	{
-		if (nb_room >= nb * NB_MALLOC && ++nb)
-			room = realloc_room(room, nb);
-		if (check == 1)
-			init_room(tab[l], room, 0, nb_room++);
-		else if (check == 2 && check_room(tab[l + 1], room) &&  s++ == 0)
-			init_room(tab[++l], room, 1, nb_room++);
-		else if (check == 3 && check_room(tab[l + 1], room) && e++ == 0)
-			init_room(tab[++l], room, -1, nb_room++);
-		else if (check == 5 && *ants == 0)
-			*ants = ft_atoi(tab[l]);
-		else if (check != 4)
+		if (i == 1)
+			init_room(*tab, room, 0, --nb_rooms);
+		else if (i == 2)
+		{
+			tab = next_tab(tab);
+			init_room(*tab, room, 1, --nb_rooms);
+		}
+		else if (i == 3)
+		{
+			tab = next_tab(tab);
+			init_room(*tab, room, 1, --nb_rooms);
+		}
+		else if (i != 4 && i != 5)
 			break;
-		l++;
+		tab++;
 	}
 	return (room);
-}
-
-
-
-/*
-** Function fill_tube
-**----------------------
-** @param tab
-** @param room
-** @return
-*/
-
-t_link		*fill_tubes(char **tab, t_room **room)
-{
-	t_link		*tube;
-	int 		i;
-	int 		j;
-
-	j = 0;
-	i = get_last_room(room);
-	tube = malloc(50);
-	while (!ft_strstr(tab[j], R_NAME(i)))
-		j++;
-	j += 2;
-	if (!match(tab[j], "*-*"))
-		return (NULL);
-	tube = new_list(room[0]);
-	return (tube);
 }
 
 /*
@@ -133,4 +113,43 @@ char 		**create_tab()
 	tab = ft_strsplit(parsed, '|');
 	free(parsed);
 	return (tab);
+}
+
+/*
+** Function : check_first_step
+**-----------------------------
+** check if there is a good number of commands and rooms and ants
+** @param tab
+** @param ants
+** @return the number of rooms or -1 if the first half of parsing is bad
+*/
+
+int		check_first_step(char **tab, int *ants)
+{
+	int		start;
+	int		end;
+	int 	nb_room;
+	int 	i;
+
+	nb_room = 0;
+	start = 0;
+	end = 0;
+	if ((i = check_which(*tab)) != 5)
+		return (-1);
+	*ants = ft_atoi(*tab++);
+	while (i != -1 && *tab && (i = check_which(*tab)))
+	{
+		if (i == 1)
+			nb_room++;
+		else if (i == 2)
+			start++;
+		else if (i == 3)
+			end++;
+		else if (i == 5)
+			i = -1;
+		else if (i != 4)
+			break;
+		tab++;
+	}
+	return ((end != 1 || start !=1 || i == -1) ? -1 : nb_room);
 }
