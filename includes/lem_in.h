@@ -18,7 +18,6 @@
 # include "def.h"
 # include <stdbool.h>
 # include <stdlib.h>
-# include <stdio.h>
 
 /*
 ** Struct t_room
@@ -44,6 +43,7 @@ typedef struct		s_room
 typedef struct		s_link
 {
 	int				nb_kids;
+	int				number;
 	t_room			*room;
 	struct s_link	**kids;
 }					t_link;
@@ -100,7 +100,6 @@ void				path(t_link *root, char **tab, t_room **room, int nb);
 
 void				clean_tree(t_link **root);
 bool				is_solve(t_link *root);
-void				send_ant(t_link *root, int *ants, int *received);
 void				solver(t_link *root, int *ants);
 
 /*

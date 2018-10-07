@@ -66,21 +66,23 @@ void		clean_tree(t_link **root)
 }
 
 /*
-** Function : send_ant2
+** Function : send_ant
 ** @param root
 ** @param ants
 ** @param received
 */
 
-void		send_ant(t_link *root, int *ants, int *received)
+void		send_ant(t_link *root, int *ants, int *received, int i)
 {
-	int		i;
+	static int		nb = 1;
 
-	i = 0;
 	while (i < root->nb_kids && *ants > 0 && !root->room->hantz)
 	{
 		if (root->kids[i] && root->kids[i]->room->hantz)
 		{
+			if (root->kids[i]->room->status == 1)
+				root->kids[i]->number = nb++;
+			ft_swap(&(root->kids[i]->number), &(root->number), sizeof(int));
 			if (!root->room->status)
 				root->room->hantz = true;
 			if (!root->kids[i]->room->status)
@@ -89,36 +91,32 @@ void		send_ant(t_link *root, int *ants, int *received)
 				*ants -= 1;
 			if (root->room->status == -1)
 				*received -= 1;
-			ft_printf("L%s-%s ", root->kids[i]->room->name, root->room->name);
+			ft_printf("L%d-%s ", root->number, root->room->name);
 		}
 		i++;
 	}
 	i = -1;
 	while (++i < root->nb_kids && *ants > 0)
-	{
 		if (root->kids[i])
-			send_ant(root->kids[i], ants, received);
-	}
+			send_ant(root->kids[i], ants, received, 0);
 }
 
-void		finish_ant(t_link *root, int *received)
+void		finish_ant(t_link *root, int *received, int i)
 {
-	int			i;
-
-	i = 0;
 	while (i < root->nb_kids && *received > 0)
 	{
 		if (root->kids[i] && root->kids[i]->room->status == 1)
 			root->kids[i]->room->hantz = false;
 		if (root->kids[i] && root->kids[i]->room->hantz)
 		{
+			ft_swap(&(root->kids[i]->number), &(root->number), sizeof(int));
 			if (!root->room->status)
 				root->room->hantz = true;
-			if (root->kids[i]->room->status)
+			if (root->kids[i]->room->status == 0)
 				root->kids[i]->room->hantz = false;
 			if (root->room->status == -1)
 				*received -= 1;
-			ft_printf("L%s-%s ", root->kids[i]->room->name, root->room->name);
+			ft_printf("L%d-%s ", root->number, root->room->name);
 		}
 		i++;
 	}
@@ -126,7 +124,7 @@ void		finish_ant(t_link *root, int *received)
 	while (++i < root->nb_kids && *received > 0)
 	{
 		if (root->kids[i])
-			finish_ant(root->kids[i], received);
+			finish_ant(root->kids[i], received, 0);
 	}
 }
 
@@ -143,12 +141,12 @@ void		solver(t_link *root, int *ants)
 	received = *ants;
 	while (*ants > 0)
 	{
-		send_ant(root, ants, &received);
+		send_ant(root, ants, &received, 0);
 		ft_printf("\n");
 	}
 	while (received > 0)
 	{
-		finish_ant(root, &received);
+		finish_ant(root, &received, 0);
 		ft_printf("\n");
 	}
 	if (*ants != 0 || received != 0)
