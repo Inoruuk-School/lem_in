@@ -25,12 +25,13 @@
 # define R_NAME(i) room[i]->name
 
 /*
-** t_tube defines
+** t_link defines
 */
 
-# define L_NB link->nb_tubes
-# define L_TUBE(i) link->tubes[i]
-
-# define NB_MALLOC 1
+# define L_STAT tube->room->status
+# define L_ANT tube->room->hantz
+# define L_Y tube->room->coord_y
+# define L_X tube->room->coord_x
+# define L_NAME tube->room->name
 
 #endif

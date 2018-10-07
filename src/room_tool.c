@@ -13,8 +13,7 @@
 
 #include "../includes/lem_in.h"
 
-
-char 	**next_tab(char **tab)
+char		**next_tab(char **tab)
 {
 	while (tab && *tab && **tab == '#')
 		tab++;
@@ -28,7 +27,7 @@ char 	**next_tab(char **tab)
 ** @return 1 = room, 0 = tubes, 2 = start, 3 = end, 4 = comment, 5 = ants
 */
 
-int 	check_which(char *str)
+int			check_which(char *str)
 {
 	if (str[0] == '#' && ft_strnstr(str, "##start", 7))
 		return (2);
@@ -55,14 +54,12 @@ int 	check_which(char *str)
 ** then free the created split
 */
 
-bool	check_room(char *str)
+bool		check_room(char *str)
 {
-	char 	**tab;
+	char	**tab;
 	bool	check;
-	int		i;
 
 	check = true;
-	i = 0;
 	if (!(tab = ft_strsplit(str, ' ')))
 		exit(0);
 	if (!check_ifalphanum(tab[0]) || tab[0][0] == 'L' || tab[0][0] == '#')
@@ -87,8 +84,8 @@ bool	check_room(char *str)
 
 void		init_room(char *str, t_room **room, int status, int nb_room)
 {
-	char 	**strtab;
-	int 	i;
+	char	**strtab;
+	int		i;
 
 	i = 0;
 	if (!(strtab = ft_strsplit(str, ' ')))
@@ -97,7 +94,7 @@ void		init_room(char *str, t_room **room, int status, int nb_room)
 	R_NAME(nb_room) = ft_strdup(strtab[0]);
 	R_X(nb_room) = ft_atoi(strtab[1]);
 	R_Y(nb_room) = ft_atoi(strtab[2]);
-	R_ANT(nb_room) = false;
+	R_ANT(nb_room) = status == 1 ? true : false;
 	while (strtab[i])
 		free(strtab[i++]);
 	free(strtab);
@@ -113,10 +110,10 @@ void		init_room(char *str, t_room **room, int status, int nb_room)
 t_room		**create_rooms(int nb_room)
 {
 	t_room	**room;
-	int 	i;
+	int		i;
 
 	i = 0;
-	if (!(room = ft_memalloc(nb_room * sizeof(t_room *) + 1)))
+	if (!(room = ft_memalloc((nb_room + 1) * sizeof(t_room *))))
 		exit(0);
 	while (i < nb_room)
 		if (!(room[i++] = ft_memalloc(sizeof(t_room))))

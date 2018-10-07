@@ -3,151 +3,131 @@
 /*                                                              /             */
 /*   tools.c                                          .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: asiaux <asiaux@student.le-NB_MALLOC1.fr>          +:+   +:    +:    +:+     */
+/*   By: asiaux <asiaux@student.le-101.fr>          +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2018/09/04 22:16:05 by asiaux       #+#   ##    ##    #+#       */
-/*   Updated: 2018/09/04 22:16:05 by asiaux      ###    #+. /#+    ###.fr     */
+/*   Created: 2018/10/03 04:57:21 by asiaux       #+#   ##    ##    #+#       */
+/*   Updated: 2018/10/03 04:57:21 by asiaux      ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-bool	check_ifdigit(char *to_check)
-{
-	bool	check;
+/*
+** Function : free_all
+**-----------------------
+** free every param witch the associated function
+** @param room
+** @param tab
+** @param head
+*/
 
-	check = true;
-	while (*to_check && check)
-	{
-		if (!isdigit(*to_check++))
-			check = false;
-	}
-	return (check);
+void		free_all(t_room **room, char **tab, t_link *head)
+{
+	free_tab((void **)tab);
+	free_link(head);
+	free(head);
+	free_room(&room);
 }
 
-bool	check_ifalphanum(char *to_check)
+/*
+** Function : free_room
+**------------------------
+** free char *name and each room
+** @param room
+*/
+
+void		free_room(t_room ***room)
+{
+	t_room		**h1;
+
+	h1 = *room;
+	if (h1)
+	{
+		while (*h1)
+		{
+			if ((*h1)->name)
+				ft_strdel(&(*h1)->name);
+			ft_memdel((void **)&(*h1));
+			h1++;
+		}
+		ft_memdel((void **)&(*h1));
+		free(*room);
+		*room = NULL;
+	}
+}
+
+/*
+** Function : free_link
+** ----------------------
+** in each node, free each kids and kid
+** @param root
+*/
+
+void		free_link(t_link *root)
 {
 	int		i;
-	bool	check;
 
-	i = 0;
-	check = true;
-	while (check && to_check[i] != '\0')
+	i = -1;
+	if (root)
 	{
-		if (!isalnum(to_check[i]))
-			check = false;
-		i++;
-	}
-	return (check);
-}
-
-t_room	*copy_room(t_room *buff, t_room *room)
-{
-	if (!buff || !room)
-		return (NULL);
-	buff->name = ft_strdup(room->name);
-	buff->coord_x = room->coord_x;
-	buff->coord_y = room->coord_y;
-	buff->status = room->status;
-	buff->hantz = room->hantz;
-	return (buff);
-}
-
-t_room	**realloc_room(t_room **room, int nb)
-{
-	int			i;
-	t_room		**buff;
-
-	nb <= 0 ? nb = 1 : nb;
-	i = 0;
-	if (room)
-	{
-		if (!(buff = ft_memalloc(sizeof(t_room *) * (nb + 1) * NB_MALLOC)))
-			exit(0);
-		while (i < nb * NB_MALLOC)
-			if (!(buff[i++] = ft_memalloc(sizeof(t_room))))
-				exit(0);
-		i = -1;
-		while (room[++i])
-			if (!(buff[i] = copy_room(buff[i], room[i])))
-				exit(0);
-		free_all(&room, NULL);
-	}
-	else
-	{
-		if (!(buff = ft_memalloc((1 + nb) * NB_MALLOC * sizeof(t_room *))))
-			exit(0);
-		while (i < nb * NB_MALLOC)
-			if (!(buff[i++] = ft_memalloc(sizeof(t_room))))
-				exit(0);
-	}
-	return (buff);
-}
-
-int		get_last_room(t_room **room)
-{
-	int 	i;
-
-	i = 0;
-	while (room[i])
-	{
-		if (room[i + 1])
-			i++;
-		else
-			break;
-	}
-	return (i);
-}
-
-void	aff_room(t_room **room, int nb_room) // a supprimer
-{
-	int i;
-
-	i = 0;
-	if (room)
-	{
-		while (i < nb_room)
+		while (++i < root->nb_kids && root->kids)
+			if (root->kids[i])
+				free_link(root->kids[i]);
+		if (root->kids && !(i = 0))
 		{
-			dprintf(1, CYN"name : %s\n", R_NAME(i));
-			dprintf(1, "status : %d\n", R_STAT(i));
-			dprintf(1, "ants : %d\n", R_ANT(i));
-			dprintf(1, "x : %d\n", R_X(i));
-			dprintf(1, "y : %d\n\n"RESET, R_Y(i));
-			i++;
+			while (i < root->nb_kids)
+			{
+				free(root->kids[i]);
+				root->kids[i++] = NULL;
+			}
+			free(root->kids);
+			root->kids = NULL;
 		}
 	}
 }
 
-
 /*
-** Function fill_tube
-**----------------------
+** Function : aff_tab
+**--------------------
+** print each lines in param tab
 ** @param tab
-** @param room
-** @return
 */
 
-t_link		*fill_tubes(char **tab, t_room **room)
+void		aff_tab(char **tab)
 {
-	t_link		*root;
-	int 		i;
-	int 		j;
+	int i;
 
-	j = 0;
-	i = get_last_room(room);
-	while (!ft_strstr(tab[j], R_NAME(i)))
-		j++;
-	j += 2;
-	while (tab[j])
+	i = -1;
+	while (tab[++i])
+		if (*tab[i])
+			ft_printf(GRN"%s\n"RESET, tab[i]);
+	ft_printf("\n");
+}
+
+/*
+** Function : count_nullkids
+**-----------------------------
+** 0 = pas bon
+** @param root
+** @param nb : number of total rooms
+** @return number of kids who arent cleaned and therefor at NULL
+*/
+
+int			count_nullkids(t_link *root, int nb)
+{
+	int		i;
+	int		ret;
+
+	i = 0;
+	ret = 0;
+	if (!root || !root->kids)
+		return (0);
+	while (i < nb)
 	{
-		if (tab[j][0] != '#' && tab[j][0] != 'L' && match(tab[j], "*-*"))
-			dprintf(1, "link : %-15s", tab[j]);
-		if (match(tab[j], "* * *"))
-			return (NULL);
-		dprintf(1, "tab[%d] = %s\n", j ,tab[j]);
-		j++;
+		if (root->kids[i])
+			ret++;
+		i++;
 	}
-	root = malloc(500);
-	return (root);
+	return (ret);
 }

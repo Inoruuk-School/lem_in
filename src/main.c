@@ -13,63 +13,49 @@
 
 #include "../includes/lem_in.h"
 
-void	free_all(t_room ***room, char ***tab)
+/*
+** Function : error
+**------------------
+** @param str : error to print
+** @param tab : being freed
+** @param room : being freed
+** @param root : being freed
+*/
+
+void	error(char *str, char **tab, t_room **room, t_link *root)
 {
-	int i;
-
-	i = 0;
-	if (room && room[0])
-	{
-		while (room[0][i])
-		{
-			if ((room[0][i])->name)
-				ft_strdel(&(room[0][i]->name));
-			free(room[0][i]);
-			room[0][i++] = NULL;
-		}
-		free(room[0]);
-	}
-	i = 0;
-	if (tab && tab[0])
-	{
-		while (tab[0][i])
-			free(tab[0][i++]);
-		free(tab[0]);
-	}
-}
-
-void	aff_tab(char **tab)
-{
-	int i = 0;
-
-	while (tab[i])
-		dprintf(1,GRN"%s\n"RESET,tab[i++]);
+	ft_printf(RED"%s\n"RESET, str);
+	if (tab)
+		free_tab((void **)tab);
+	if (room)
+		free_room(&room);
+	if (root)
+		free_link(root);
+	exit(0);
 }
 
 int		main(void)
 {
 	t_room	**room;
-//	t_link	*tube;
-	int 	ants;
-	char 	**tab;
-	int 	nb_room;
+	t_link	*tube;
+	int		ants;
+	char	**tab;
+	int		nb_room;
 
-	ants = 0;
 	room = NULL;
+	tube = NULL;
 	tab = create_tab();
+	if ((nb_room = check_first_step(tab, &ants, 0)) <= 0 || ants <= 0)
+		error(ants > 0 ? "ERROR : bad room" : "ERROR : ants", tab, room, tube);
+	room = fill_room(tab, nb_room);
+	if (!room || !check_duplicate_rooms(room, nb_room))
+		error("ERROR : Duplicate rooms", tab, room, tube);
+	tube = fill_tubes(tab, room, nb_room);
+	clean_tree(&tube);
+	if (!is_solve(tube))
+		error("ERROR : can't solve", tab, room, tube);
 	aff_tab(tab);
-	nb_room = check_first_step(tab, &ants);
-	dprintf(1, RED"First check done : nb_room : %-10d ants = %d\n"RESET, nb_room, ants);
-	if (nb_room > 0)
-		room = fill_room(tab, nb_room);
-	dprintf(1, RED"Fill room done\n"RESET);
-	if (room && check_rooms(room, nb_room))
-		aff_room(room, nb_room);
-	else
-		ft_printf(RED"Mauvais check_rooms\n"RESET);
-//	if (!(tube = fill_tubes(tab, room)))
-//		ft_printf(BLU"ERROR\n"RESET);
-//	free_all(&room, &tab);
-	dprintf(1, RED"Finished\n"RESET);
-	return (0);
+	solver(tube, &ants);
+	free_all(room, tab, tube);
+	return (EXIT_SUCCESS);
 }

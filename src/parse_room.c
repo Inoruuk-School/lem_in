@@ -22,11 +22,11 @@
 ** @return
 */
 
-bool	check_rooms(t_room **room, int nb_room)
+bool		check_duplicate_rooms(t_room **room, int nb_room)
 {
 	bool	check;
-	int 	i;
-	int 	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	check = true;
@@ -56,7 +56,7 @@ bool	check_rooms(t_room **room, int nb_room)
 t_room		**fill_room(char **tab, int nb_rooms)
 {
 	t_room	**room;
-	int 	i;
+	int		i;
 
 	i = 0;
 	if (!(room = create_rooms(nb_rooms)))
@@ -73,10 +73,10 @@ t_room		**fill_room(char **tab, int nb_rooms)
 		else if (i == 3)
 		{
 			tab = next_tab(tab);
-			init_room(*tab, room, 1, --nb_rooms);
+			init_room(*tab, room, -1, --nb_rooms);
 		}
 		else if (i != 4 && i != 5)
-			break;
+			break ;
 		tab++;
 	}
 	return (room);
@@ -90,13 +90,13 @@ t_room		**fill_room(char **tab, int nb_rooms)
 ** @return the tab
 */
 
-char 		**create_tab()
+char		**create_tab(void)
 {
-	char 	*line;
-	char 	*parsed;
-	char 	**tab;
-	int 	len;
-	int 	nb;
+	char	*line;
+	char	*parsed;
+	char	**tab;
+	int		len;
+	int		nb;
 
 	len = 0;
 	nb = 1;
@@ -124,15 +124,13 @@ char 		**create_tab()
 ** @return the number of rooms or -1 if the first half of parsing is bad
 */
 
-int		check_first_step(char **tab, int *ants)
+int			check_first_step(char **tab, int *ants, int start)
 {
-	int		start;
 	int		end;
-	int 	nb_room;
-	int 	i;
+	int		nb_room;
+	int		i;
 
 	nb_room = 0;
-	start = 0;
 	end = 0;
 	if ((i = check_which(*tab)) != 5)
 		return (-1);
@@ -148,8 +146,8 @@ int		check_first_step(char **tab, int *ants)
 		else if (i == 5)
 			i = -1;
 		else if (i != 4)
-			break;
+			break ;
 		tab++;
 	}
-	return ((end != 1 || start !=1 || i == -1) ? -1 : nb_room);
+	return ((end != 1 || start != 1 || i == -1) ? -1 : nb_room);
 }
