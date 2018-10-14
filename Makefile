@@ -6,7 +6,7 @@
 #    By: asiaux <asiaux@student.le-101.fr>          +:+   +:    +:    +:+     #
 #                                                  #+#   #+    #+    #+#      #
 #    Created: 2018/10/05 07:55:16 by asiaux       #+#   ##    ##    #+#       #
-#    Updated: 2018/10/05 07:55:16 by asiaux      ###    #+. /#+    ###.fr     #
+#    Updated: 2018/10/11 23:51:35 by asiaux      ###    #+. /#+    ###.fr      #
 #                                                          /                  #
 #                                                         /                   #
 #  ************************************************************************** #
@@ -23,6 +23,7 @@ SRCDIR = ./src/
 OBJDIR = ./obj/
 HEADERDIR = ./includes/
 LIBFTDIR = ./libft/
+OBJALL = $(OBJDIR)
 
 # **************************************************************************** #
 #																			   #
@@ -43,7 +44,6 @@ OBJLEM = $(addprefix $(OBJDIR), $(addsuffix .o, $(FILESFILLER)))
 
 SRCS = $(SRCLEM)
 OBJS = $(OBJLEM)
-OBJALL = $(OBJDIR)
 
 # **************************************************************************** #
 #																			   #
@@ -53,15 +53,13 @@ OBJALL = $(OBJDIR)
 
 all : $(NAME)
 
-$(NAME): lib $(OBJALL) $(OBJS)
+$(NAME):  $(OBJALL) $(OBJS) $(LIBFTDIR)libft.a | signature
 	@printf "Compiling $(NAME)..."
-	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFTDIR)libft.a
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFTDIR)libft.a
 	@printf "\033[32m[OK]\033[0m\n"
 
-lib:
-	@printf "Compiling libft"
+$(LIBFTDIR)libft.a: libft
 	@make -C $(LIBFTDIR)
-	@printf "\033[32m[OK]\033[0m\n"
 
 $(OBJALL):
 	@mkdir $@
@@ -80,3 +78,6 @@ fclean: clean
 	@make fclean -C libft/
 
 re: fclean all
+
+signature:
+	@echo "Nothing to do dumbass"

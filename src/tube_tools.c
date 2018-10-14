@@ -108,14 +108,16 @@ bool		check_name2(char *str, t_room **room)
 	first = true;
 	sec = true;
 	str2 = 1 + ft_strchr(str, '-');
-	while (*room)
+	str[str2 - str - 1] = '\0';
+	while (*room && (first || sec))
 	{
-		if (first && ft_strncmp(str, (*room)->name, str2 - str - 1) == 0)
+		if (first && !ft_strcmp((*room)->name, str))
 			first = false;
 		else if (sec && ft_strcmp(str2, (*room)->name) == 0)
 			sec = false;
 		room++;
 	}
+	str[str2 - str - 1] = '-';
 	return (!first && !sec ? true : false);
 }
 

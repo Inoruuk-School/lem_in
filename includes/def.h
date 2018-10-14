@@ -24,14 +24,4 @@
 # define R_X(i) room[i]->coord_x
 # define R_NAME(i) room[i]->name
 
-/*
-** t_link defines
-*/
-
-# define L_STAT tube->room->status
-# define L_ANT tube->room->hantz
-# define L_Y tube->room->coord_y
-# define L_X tube->room->coord_x
-# define L_NAME tube->room->name
-
 #endif

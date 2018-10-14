@@ -57,7 +57,8 @@ void		clean_tree(t_link **root)
 	while ((*root)->kids && (*root)->kids[i])
 		clean_tree(&(*root)->kids[i++]);
 	(*root)->nb_kids = i;
-	if (!count_nullkids(*root, i) && (*root)->room->status != 1)
+	if (!count_nullkids(*root, i) && (!(*root)->room ||\
+		(*root)->room->status != 1))
 	{
 		(*root)->room = NULL;
 		ft_memdel((void **)&(*root)->room);

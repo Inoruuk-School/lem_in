@@ -112,7 +112,7 @@ void		path(t_link *root, char **tab, t_room **room, int nb)
 			path(root->kids[i], tab, room, nb);
 			i++;
 		}
-		if (root->room->status != 1 && root->room->status != -1)
+		if (root->room && root->room->status != 1 && root->room->status != -1)
 		{
 			split = search_links(tab, root->room->name, nb);
 			root->kids = create_kids(split, count_split(split), room);

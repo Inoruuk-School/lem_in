@@ -28,14 +28,14 @@ void		check_second_step(char **tab, t_room **room)
 	check = true;
 	while (check && *tab)
 	{
-		while (**tab == '#')
+		while (*tab && **tab == '#')
 			tab++;
-		if (**tab == 'L')
+		if (*tab && **tab == 'L')
 		{
 			**tab = '\0';
 			check = false;
 		}
-		else if (!match(*tab, "*-*") || !check_name2(*tab, room))
+		else if (*tab && (!match(*tab, "*-*") || !check_name2(*tab, room)))
 		{
 			**tab = '\0';
 			check = false;

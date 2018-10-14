@@ -8,6 +8,7 @@ dead1 3 3
 mid0 4 4
 mid1 5 5
 mid2 6 6
+start-end
 start-dead0
 start-mid0
 mid0-end

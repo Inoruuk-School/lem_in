@@ -112,6 +112,8 @@ char		**create_tab(void)
 		free(line);
 	tab = ft_strsplit(parsed, '|');
 	free(parsed);
+	if (!*tab)
+		error("ERROR : FEeeEED ME LINES PLZ!\n", tab, NULL, NULL);
 	return (tab);
 }
 
