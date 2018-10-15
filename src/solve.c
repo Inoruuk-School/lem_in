@@ -104,7 +104,7 @@ void		send_ant(t_link *root, int *ants, int *received, int i)
 
 void		finish_ant(t_link *root, int *received, int i)
 {
-	while (i < root->nb_kids && *received > 0)
+	while (i < root->nb_kids && *received > 0 && !root->room->hantz)
 	{
 		if (root->kids[i] && root->kids[i]->room->status == 1)
 			root->kids[i]->room->hantz = false;
