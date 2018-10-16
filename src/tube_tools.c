@@ -81,7 +81,7 @@ char		**check_duplicate(char **split)
 		j = i + 1;
 		while (split[j])
 		{
-			if (strcmp(split[i], split[j]) == 0)
+			if (ft_strcmp(split[i], split[j]) == 0)
 				split[j][0] = '\0';
 			j++;
 		}

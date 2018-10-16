@@ -62,6 +62,8 @@ bool		check_room(char *str)
 	check = true;
 	if (!(tab = ft_strsplit(str, ' ')))
 		exit(0);
+	if (!tab[0] || !tab[1] || !tab[2])
+		return (false);
 	if (!check_ifalphanum(tab[0]) || tab[0][0] == 'L' || tab[0][0] == '#')
 		check = false;
 	if (!check_ifdigit(tab[1]) && !check_ifdigit(tab[2]))

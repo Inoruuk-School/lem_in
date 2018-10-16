@@ -30,11 +30,10 @@ void		check_second_step(char **tab, t_room **room)
 	{
 		while (*tab && **tab == '#')
 			tab++;
-		if (*tab && **tab == 'L')
-		{
+		if (!*tab)
+			break ;
+		if (*tab && **tab == 'L' && !(check = false))
 			**tab = '\0';
-			check = false;
-		}
 		else if (*tab && (!match(*tab, "*-*") || !check_name2(*tab, room)))
 		{
 			**tab = '\0';
@@ -127,7 +126,7 @@ t_link		*tube_search(t_link *tube, char *name)
 ** @param root
 ** @param room
 ** @param nb : numder of rooms
-** @return
+** @return the tree with every path starting from the end room
 */
 
 t_link		*create_tubes(char **tab, t_link *root, t_room **room, int nb)
