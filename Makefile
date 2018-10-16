@@ -53,13 +53,15 @@ OBJS = $(OBJLEM)
 
 all : $(NAME)
 
-$(NAME):  $(OBJALL) $(OBJS) $(LIBFTDIR)libft.a | signature
+$(NAME): $(LIBFTDIR)libft.a $(OBJALL) $(OBJS)
 	@printf "Compiling $(NAME)..."
-	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFTDIR)libft.a
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFTDIR)libft.a
 	@printf "\033[32m[OK]\033[0m\n"
 
 $(LIBFTDIR)libft.a: libft
+	@printf "Compiling libft..."
 	@make -C $(LIBFTDIR)
+	@printf "\033[32m[OK]\033[0m\n"
 
 $(OBJALL):
 	@mkdir $@
