@@ -53,6 +53,7 @@ typedef struct		s_link
 */
 
 void				error(char *str, char **tab, t_room **room, t_link *root);
+void				exeption(t_link *end, int *ants);
 
 /*
 ** parse_room.c

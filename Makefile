@@ -11,7 +11,7 @@
 #                                                         /                   #
 #  ************************************************************************** #
 
-.PHONY = lib all clean fclean re
+.PHONY = $(POINTA) all clean fclean re
 
 # **************************************************************************** #
 #																			   #
@@ -33,14 +33,15 @@ OBJALL = $(OBJDIR)
 
 NAME = lem_in
 CC = gcc
-CFLAGS = -Werror -Wall -Wextra -g -fsanitize=address
+CFLAGS = -Werror -Wall -Wextra
+POINTA = $(addprefix $(LIBFTDIR), libft.a)
 HEADERS = $(addprefix $(HEADERDIR), lem_in.h def.h)
 
-FILESFILLER = 	main parse_room room_tool solve tools tube_tools tube_parse\
+FILESLEM = 	main parse_room room_tool solve tools tube_tools tube_parse\
 				tube_tools2
 
-SRCLEM = $(addprefix $(SRCDIR), $(addsuffix .c, $(FILESFILLER)))
-OBJLEM = $(addprefix $(OBJDIR), $(addsuffix .o, $(FILESFILLER)))
+SRCLEM = $(addprefix $(SRCDIR), $(addsuffix .c, $(FILESLEM)))
+OBJLEM = $(addprefix $(OBJDIR), $(addsuffix .o, $(FILESLEM)))
 
 SRCS = $(SRCLEM)
 OBJS = $(OBJLEM)
@@ -53,17 +54,13 @@ OBJS = $(OBJLEM)
 
 all : $(NAME)
 
-$(NAME): $(LIBFTDIR)libft.a $(OBJALL) $(OBJS)
+$(NAME): $(OBJDIR) $(OBJS) libft
+	@make -C libft/
 	@printf "Compiling $(NAME)..."
-	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFTDIR)libft.a
+	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(POINTA)
 	@printf "\033[32m[OK]\033[0m\n"
 
-$(LIBFTDIR)libft.a: libft
-	@printf "Compiling libft..."
-	@make -C $(LIBFTDIR)
-	@printf "\033[32m[OK]\033[0m\n"
-
-$(OBJALL):
+$(OBJDIR):
 	@mkdir $@
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(HEADERS)
@@ -80,6 +77,3 @@ fclean: clean
 	@make fclean -C libft/
 
 re: fclean all
-
-signature:
-	@echo "Nothing to do dumbass"

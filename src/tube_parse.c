@@ -65,7 +65,7 @@ char		**search_links(char **tab, char *name, int nb_rooms)
 	char	*buff;
 	void	*start;
 
-	if (!(split = ft_memalloc(sizeof(char *) * (nb_rooms))))
+	if (!(split = ft_memalloc(sizeof(char *) * (nb_rooms + 1))))
 		return (NULL);
 	start = split;
 	while (*tab)
@@ -83,7 +83,7 @@ char		**search_links(char **tab, char *name, int nb_rooms)
 		}
 		tab++;
 	}
-	return (check_duplicate(start));
+	return (start);
 }
 
 /*
@@ -158,6 +158,7 @@ t_link		*fill_tubes(char **tab, t_room **room, int nb_room)
 		tab++;
 	check_second_step(++tab, room);
 	cpy = copy_tab(tab);
+	check_duplicate(cpy);
 	if (!(root = create_root(search_end(room))))
 		return (NULL);
 	root = create_tubes(cpy, root, room, nb_room);

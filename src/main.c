@@ -13,9 +13,26 @@
 
 #include "../includes/lem_in.h"
 
+void	exeption(t_link *end, int *ants)
+{
+	int i;
+	int nb;
+
+	i = 1;
+	nb = *ants;
+	while (nb > 0)
+	{
+		ft_printf("L%d-%s ", i++, end->room->name);
+		nb--;
+	}
+	write(0, "\n", 1);
+	*ants = nb;
+}
+
 /*
 ** Function : error
 **------------------
+** print str and free the rest of the params
 ** @param str : error to print
 ** @param tab : being freed
 ** @param room : being freed

@@ -29,9 +29,9 @@ char		**next_tab(char **tab)
 
 int			check_which(char *str)
 {
-	if (str[0] == '#' && ft_strnstr(str, "##start", 7))
+	if (str[0] == '#' && !ft_strcmp(str, "##start"))
 		return (2);
-	else if (str[0] == '#' && ft_strnstr(str, "##end", 5))
+	else if (str[0] == '#' && !ft_strcmp(str, "##end"))
 		return (3);
 	else if (str[0] == '#')
 		return (4);

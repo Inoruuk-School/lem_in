@@ -139,6 +139,16 @@ void		solver(t_link *root, int *ants)
 {
 	int		received;
 
+	received = -1;
+	while (++received < root->nb_kids)
+	{
+		if (root->kids[received] && root->kids[received]->room->status == 1)
+		{
+			exeption(root, &*ants);
+			if (!*ants)
+				return ;
+		}
+	}
 	received = *ants;
 	while (*ants > 0)
 	{
