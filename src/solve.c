@@ -144,7 +144,7 @@ void		solver(t_link *root, int *ants)
 	{
 		if (root->kids[received] && root->kids[received]->room->status == 1)
 		{
-			exeption(root, &*ants);
+			exeption(root, ants);
 			if (!*ants)
 				return ;
 		}

@@ -153,10 +153,12 @@ t_link		*fill_tubes(char **tab, t_room **room, int nb_room)
 	t_link		*root;
 	char		**cpy;
 
-	tab++;
+	cpy = tab++;
 	while (!ft_strstr(*tab, R_NAME(0)))
 		tab++;
 	check_second_step(++tab, room);
+	if (!*tab || !**tab)
+		error("ERROR: link error\n", cpy, room, NULL);
 	cpy = copy_tab(tab);
 	check_duplicate(cpy);
 	if (!(root = create_root(search_end(room))))

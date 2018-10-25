@@ -54,14 +54,16 @@ OBJS = $(OBJLEM)
 
 all : $(NAME)
 
-$(NAME): $(OBJDIR) $(OBJS) libft
-	@make -C libft/
+$(NAME): $(POINTA) $(OBJDIR) $(OBJS)
 	@printf "Compiling $(NAME)..."
 	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(POINTA)
 	@printf "\033[32m[OK]\033[0m\n"
 
 $(OBJDIR):
 	@mkdir $@
+
+$(POINTA): libft/
+	@make -C $(LIBFTDIR)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(HEADERS)
 	@printf "%b" "Compiling $< in $@..."
