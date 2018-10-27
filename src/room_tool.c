@@ -13,6 +13,14 @@
 
 #include "../includes/lem_in.h"
 
+/*
+** Function : next_tab
+**----------------------
+** Search in param tab the next non comment line
+** @param tab
+** @return
+*/
+
 char		**next_tab(char **tab)
 {
 	while (tab && *tab && **tab == '#')
@@ -120,5 +128,35 @@ t_room		**create_rooms(int nb_room)
 	while (i < nb_room)
 		if (!(room[i++] = ft_memalloc(sizeof(t_room))))
 			exit(0);
+	return (room);
+}
+
+/*
+** Function : init_room2
+**------------------------
+** @param str : contain name, x & y
+** @param room
+** @param status 0 = normal, 1 = start, -1 = end
+** @param nb_room : which room to init
+*/
+
+t_room		*init_room2(char *str, int status)
+{
+	char	**strtab;
+	t_room	*room;
+	int		i;
+
+	i = 0;
+	if (!(strtab = ft_strsplit(str, ' ')) ||\
+		!(room = ft_memalloc(sizeof(t_room))))
+		exit(0);
+	room->status = status;
+	room->name = ft_strdup(strtab[0]);
+	room->coord_x = ft_atoi(strtab[1]);
+	room->coord_y = ft_atoi(strtab[2]);
+	room->hantz = status == 1 ? true : false;
+	while (strtab[i])
+		free(strtab[i++]);
+	free(strtab);
 	return (room);
 }

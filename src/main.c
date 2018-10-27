@@ -13,6 +13,14 @@
 
 #include "../includes/lem_in.h"
 
+
+/*
+** Function : exeption
+**-----------------------
+** Used only when start and end are linked
+** @param end
+** @param ants
+*/
 void	exeption(t_link *end, int *ants)
 {
 	int i;
@@ -53,7 +61,9 @@ void	error(char *str, char **tab, t_room **room, t_link *root)
 
 int		main(void)
 {
+	t_trie *root;
 	t_room	**room;
+	t_r_tree *head;
 	t_link	*tube;
 	int		ants;
 	char	**tab;
@@ -64,7 +74,15 @@ int		main(void)
 	tab = create_tab();
 	if ((nb_room = check_first_step(tab, &ants, 0)) <= 0 || ants <= 0)
 		error(ants > 0 ? "ERROR : bad room" : "ERROR : ants", tab, room, tube);
-	room = fill_room(tab, nb_room);
+	head = create_tree(tab);
+//	root = gettrie();
+
+
+
+
+/*
+//	if (!list || !check_duplicate_rooms2(list))
+//		error("ERROR : Duplicate rooms", NULL, NULL, NULL);
 	if (!room || !check_duplicate_rooms(room, nb_room))
 		error("ERROR : Duplicate rooms", tab, room, tube);
 	tube = fill_tubes(tab, room, nb_room);
@@ -74,5 +92,5 @@ int		main(void)
 	aff_tab(tab);
 	solver(tube, &ants);
 	free_all(room, tab, tube);
-	return (EXIT_SUCCESS);
+*/	return (EXIT_SUCCESS);
 }

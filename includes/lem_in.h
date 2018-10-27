@@ -36,6 +36,19 @@ typedef struct		s_room
 	char			*name;
 }					t_room;
 
+typedef struct		s_r_tree
+{
+	t_room			*room;
+	struct s_r_tree	*minus;
+	struct s_r_tree	*plus;
+}					t_r_tree;
+
+typedef struct 		s_trie
+{
+	struct s_trie	*child[62];
+	t_room			*room;
+}					t_trie;
+
 /*
 ** Struct s_link
 */
@@ -73,6 +86,26 @@ void				init_room(char *str, t_room **room, int stat, int nb_room);
 char				**next_tab(char **tab);
 t_room				**create_rooms(int nb_room);
 int					check_which(char *str);
+t_r_tree		*create_room_list(t_room *room);
+t_room		*init_room2(char *str, int status);
+
+/*
+** trie.c
+*/
+
+t_trie		*getnode(void);
+t_trie		*gettrie(t_list *rooms);
+int 		find_key(char c);
+void		put_room(t_trie *root, t_room *room, char *name);
+
+/*
+** room_tree.c
+*/
+
+void			fill_list(char **tab, t_r_tree *head);
+void			find_place(t_r_tree *head, t_room *room);
+t_r_tree		*create_link(t_room *room);
+t_r_tree		*create_tree(char **tab);
 
 /*
 ** tube_parse.c

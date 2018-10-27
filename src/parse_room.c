@@ -53,33 +53,29 @@ bool		check_duplicate_rooms(t_room **room, int nb_room)
 ** @return the created tab of room
 */
 
-t_room		**fill_room(char **tab, int nb_rooms)
+t_list		*fill_room(char **tab, int nb_rooms)
 {
-	t_room	**room;
+	t_list	*list;
+	t_list	*head;
 	int		i;
 
 	i = 0;
-	if (!(room = create_rooms(nb_rooms)))
+	if (!(list = ft_lstnew(NULL, 0)))
 		return (NULL);
+	head = list;
 	while (*tab && (i = check_which(*tab)))
 	{
 		if (i == 1)
-			init_room(*tab, room, 0, --nb_rooms);
-		else if (i == 2)
-		{
-			tab = next_tab(tab);
+			list->content = init_room2(*tab, 0);
+		else if (i == 2 && (tab = next_tab(tab)))
 			init_room(*tab, room, 1, --nb_rooms);
-		}
-		else if (i == 3)
-		{
-			tab = next_tab(tab);
+		else if (i == 3 && (tab = next_tab(tab)))
 			init_room(*tab, room, -1, --nb_rooms);
-		}
 		else if (i != 4 && i != 5)
 			break ;
 		tab++;
 	}
-	return (room);
+	return (head);
 }
 
 /*
@@ -153,3 +149,4 @@ int			check_first_step(char **tab, int *ants, int start)
 	}
 	return ((end != 1 || start != 1 || i == -1) ? -1 : nb_room);
 }
+
