@@ -32,21 +32,21 @@ char		**next_tab(char **tab)
 ** Function check_which
 **---------------------
 ** @param str given string to check
-** @return 1 = room, 0 = tubes, 2 = start, 3 = end, 4 = comment, 5 = ants
+** @return -1 = end, 0 = room, 1 = start, 3 = tubes, 4 = comment, 5 = ants
 */
 
 int			check_which(char *str)
 {
-	if (str[0] == '#' && !ft_strcmp(str, "##start"))
-		return (2);
-	else if (str[0] == '#' && !ft_strcmp(str, "##end"))
-		return (3);
+	if (str[0] == '#' && !ft_strcmp(str, "##end"))
+		return (-1);
+	else if (str[0] == '#' && !ft_strcmp(str, "##start"))
+		return (1);
 	else if (str[0] == '#')
 		return (4);
 	else if (match(str, "* * *") && check_room(str))
-		return (1);
-	else if (match(str, "*-*"))
 		return (0);
+	else if (match(str, "*-*"))
+		return (3);
 	else if (check_ifdigit(str))
 		return (5);
 	return (-1);
@@ -86,61 +86,13 @@ bool		check_room(char *str)
 /*
 ** Function : init_room
 **------------------------
+** cerate the room and put it in the trie
 ** @param str : contain name, x & y
-** @param room
 ** @param status 0 = normal, 1 = start, -1 = end
-** @param nb_room : which room to init
+** @param root : trie which will be filled with rooms
 */
 
-void		init_room(char *str, t_room **room, int status, int nb_room)
-{
-	char	**strtab;
-	int		i;
-
-	i = 0;
-	if (!(strtab = ft_strsplit(str, ' ')))
-		exit(0);
-	R_STAT(nb_room) = status;
-	R_NAME(nb_room) = ft_strdup(strtab[0]);
-	R_X(nb_room) = ft_atoi(strtab[1]);
-	R_Y(nb_room) = ft_atoi(strtab[2]);
-	R_ANT(nb_room) = status == 1 ? true : false;
-	while (strtab[i])
-		free(strtab[i++]);
-	free(strtab);
-}
-
-/*
-** Function : create_rooms
-** --------------------------
-** @param nb_room : number of rooms to malloc
-** @return the malloced struct **
-*/
-
-t_room		**create_rooms(int nb_room)
-{
-	t_room	**room;
-	int		i;
-
-	i = 0;
-	if (!(room = ft_memalloc((nb_room + 1) * sizeof(t_room *))))
-		exit(0);
-	while (i < nb_room)
-		if (!(room[i++] = ft_memalloc(sizeof(t_room))))
-			exit(0);
-	return (room);
-}
-
-/*
-** Function : init_room2
-**------------------------
-** @param str : contain name, x & y
-** @param room
-** @param status 0 = normal, 1 = start, -1 = end
-** @param nb_room : which room to init
-*/
-
-t_room		*init_room2(char *str, int status)
+void		init_room(char *str, int status, t_trie *root)
 {
 	char	**strtab;
 	t_room	*room;
@@ -158,5 +110,5 @@ t_room		*init_room2(char *str, int status)
 	while (strtab[i])
 		free(strtab[i++]);
 	free(strtab);
-	return (room);
+	put_room(root, room, room->name);
 }

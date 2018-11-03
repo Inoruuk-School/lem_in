@@ -13,121 +13,49 @@
 
 #include "../includes/lem_in.h"
 
-/*
-** Function : free_all
-**-----------------------
-** free every param witch the associated function
-** @param room
-** @param tab
-** @param head
-*/
 
-void		free_all(t_room **room, char **tab, t_link *head)
+void	free_trie(t_trie **root)
 {
-	free_tab((void **)tab);
-	free_link(head);
-	free(head);
-	free_room(&room);
-}
-
-/*
-** Function : free_room
-**------------------------
-** free char *name and each room
-** @param room
-*/
-
-void		free_room(t_room ***room)
-{
-	t_room		**h1;
-
-	h1 = *room;
-	if (h1)
-	{
-		while (*h1)
-		{
-			if ((*h1)->name)
-				ft_strdel(&(*h1)->name);
-			ft_memdel((void **)&(*h1));
-			h1++;
-		}
-		ft_memdel((void **)&(*h1));
-		free(*room);
-		*room = NULL;
-	}
-}
-
-/*
-** Function : free_link
-** ----------------------
-** in each node, free each kids and kid
-** @param root
-*/
-
-void		free_link(t_link *root)
-{
-	int		i;
-
-	i = -1;
-	if (root)
-	{
-		while (++i < root->nb_kids && root->kids)
-			if (root->kids[i])
-				free_link(root->kids[i]);
-		if (root->kids && !(i = 0))
-		{
-			while (i < root->nb_kids)
-			{
-				free(root->kids[i]);
-				root->kids[i++] = NULL;
-			}
-			free(root->kids);
-			root->kids = NULL;
-		}
-	}
-}
-
-/*
-** Function : aff_tab
-**--------------------
-** print each lines in param tab
-** @param tab
-*/
-
-void		aff_tab(char **tab)
-{
-	int i;
-
-	i = -1;
-	while (tab[++i])
-		if (*tab[i])
-			ft_printf(GRN"%s\n"RESET, tab[i]);
-	ft_printf("\n");
-}
-
-/*
-** Function : count_nullkids
-**-----------------------------
-** 0 = pas bon
-** @param root
-** @param nb : number of total rooms
-** @return number of kids who arent cleaned and therefor at NULL
-*/
-
-int			count_nullkids(t_link *root, int nb)
-{
-	int		i;
-	int		ret;
+	int 	i;
 
 	i = 0;
-	ret = 0;
-	if (!root || !root->kids)
-		return (0);
-	while (i < nb)
+	while (i < MY_ALPHA)
 	{
-		if (root->kids[i])
-			ret++;
+		if ((*root)->child[i])
+			free_trie(&(*root)->child[i]);
 		i++;
 	}
-	return (ret);
+	if ((*root)->room)
+	{
+		ft_strdel(&(*root)->room->name);
+		ft_memdel((void **)&(*root)->room);
+	}
+	ft_memdel((void **)&(*root));
+}
+
+void	free_all(char **tab, t_tube **head, t_trie **root)
+{
+	if (tab)
+		free_tab((void **)tab);
+	if (head)
+		free_tube(head);
+	if (root)
+		free_trie(root);
+}
+
+/*
+** Function : error
+**------------------
+** print str and free the rest of the params
+** @param str : error to print
+** @param tab : being freed
+** @param room : being freed
+** @param root : being freed
+*/
+
+void	error(char *str, char **tab, t_trie **root, t_tube **head)
+{
+	ft_printf(RED"%s\n"RESET, str);
+	free_all(tab, head, root);
+	exit(0);
 }

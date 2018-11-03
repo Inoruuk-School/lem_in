@@ -18,13 +18,12 @@
 # include "def.h"
 # include <stdbool.h>
 # include <stdlib.h>
-
+# define MY_ALPHA 62
 /*
 ** Struct t_room
 **----------------
 ** @param : status 0 room normal, -1 room end, +1 room start
 ** @param : hantz a.k.a ants, 0 = vide 1 = plein
-** @coord_ : coordonnées x et y de la room
 */
 
 typedef struct		s_room
@@ -36,12 +35,11 @@ typedef struct		s_room
 	char			*name;
 }					t_room;
 
-typedef struct		s_r_tree
-{
-	t_room			*room;
-	struct s_r_tree	*minus;
-	struct s_r_tree	*plus;
-}					t_r_tree;
+/*
+** Struct t_trie
+**----------------
+** tree struct used to organize and search easily the rooms by their name
+*/
 
 typedef struct 		s_trie
 {
@@ -49,101 +47,88 @@ typedef struct 		s_trie
 	t_room			*room;
 }					t_trie;
 
-/*
-** Struct s_link
-*/
-
-typedef struct		s_link
+typedef struct		s_tube
 {
-	int				nb_kids;
-	int				number;
+	unsigned int	nb;
 	t_room			*room;
-	struct s_link	**kids;
-}					t_link;
+	struct s_tube	*bro;
+	struct s_tube	*child;
+}					t_tube;
 
 /*
 ** main
 */
 
-void				error(char *str, char **tab, t_room **room, t_link *root);
-void				exeption(t_link *end, int *ants);
+void				error(char *str, char **tab, t_trie **root, t_tube **head);
+void				exception(char *end, int *ants);
 
 /*
 ** parse_room.c
 */
 
-int					check_first_step(char **tab, int *ants, int start);
+bool				check_first_step(char **tab, int *ants);
 char				**create_tab(void);
-t_room				**fill_room(char **tab, int nb_room);
-bool				check_duplicate_rooms(t_room **room, int nb_room);
+t_trie				*fill_room(char **tab);
 
 /*
 ** room_tool.c
 */
 
 bool				check_room(char *str);
-void				init_room(char *str, t_room **room, int stat, int nb_room);
 char				**next_tab(char **tab);
-t_room				**create_rooms(int nb_room);
 int					check_which(char *str);
-t_r_tree		*create_room_list(t_room *room);
-t_room		*init_room2(char *str, int status);
+void				init_room(char *str, int status, t_trie *root);
 
 /*
 ** trie.c
 */
 
 t_trie		*getnode(void);
-t_trie		*gettrie(t_list *rooms);
+t_room		*getroom(t_trie *root, char *str);
 int 		find_key(char c);
 void		put_room(t_trie *root, t_room *room, char *name);
-
-/*
-** room_tree.c
-*/
-
-void			fill_list(char **tab, t_r_tree *head);
-void			find_place(t_r_tree *head, t_room *room);
-t_r_tree		*create_link(t_room *room);
-t_r_tree		*create_tree(char **tab);
-
-/*
-** tube_parse.c
-*/
-
-t_link				*fill_tubes(char **tab, t_room **room, int nb_room);
-t_link				*create_root(t_room *room);
-
-/*
-** tube_tools.c && tube_tools2.c
-*/
-
-t_room				*search_end(t_room **room);
-char				**search_links(char **tab, char *name, int nb_rooms);
-char				**check_duplicate(char **split);
-bool				check_name2(char *str, t_room **room);
-int					count_split(char **split);
-t_link				**create_kids(char **split, int nb, t_room **room);
-void				init_kids(t_link **kids, char **split, t_room **room);
-t_room				*search_room(t_room **room, char *name);
-void				path(t_link *root, char **tab, t_room **room, int nb);
-
-/*
-** solve.c
-*/
-
-void				clean_tree(t_link **root);
-bool				is_solve(t_link *root);
-void				solver(t_link *root, int *ants);
+void		aff_trie(t_trie *root);
 
 /*
 ** tools.c
 */
 
-void				free_all(t_room **room, char **tab, t_link *head);
-void				free_room(t_room ***room);
-void				free_link(t_link *root);
-void				aff_tab(char **tab);
-int					count_nullkids(t_link *root, int nb);
+void				free_trie(t_trie **root);
+void				free_all(char **tab, t_tube **head, t_trie **root);
+
+/*
+** new_tube.c
+*/
+char 		*find_end(char **tab);
+t_tube		*getlinks(t_tube *head, t_trie *root, char **tab, char *str);
+t_tube		*getend(t_trie *root, char **tab, char *end);
+void		gittubes(t_tube *head, t_trie *root, char **tab);
+t_tube		*parse_tubes(char **tab, t_trie *root);
+
+/*
+** new_tube_tool.c
+*/
+
+t_tube		*make_tube(t_room *room);
+void		make_bro(t_tube *current, t_room *room);
+void		check_links(char **tab, t_trie *root);
+bool		check_name3(char *str, t_trie *root);
+void		duplicate_link(char **split);
+/*
+** clean_tube.c
+*/
+
+void		free_tube(t_tube **head);
+void 		clean_tube(t_tube	**head);
+t_tube		*del_tube(t_tube **head);
+bool		check_bro_status(t_tube *node);
+
+/*
+** solver2.c
+*/
+bool	is_solve2(t_tube *head);
+void 	send_ants2(t_tube *head, int *ants, int *received);
+void 	finish_ants2(t_tube *head, int *received);
+void	solver(t_tube *head, int *ants);
 
 #endif

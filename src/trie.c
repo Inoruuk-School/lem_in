@@ -76,40 +76,61 @@ void		put_room(t_trie *root, t_room *room, char *name)
 	if (!root->child[key])
 	{
 		if (!(root->child[key] = getnode()))
-			exit(0);
+			exit(2);
 		put_room(root->child[key], room, name);
 	}
-	if (root->child[key])
+	else if (root->child[key])
 		put_room(root->child[key], room, name);
 }
 
+
 /*
-** Function : gettrie
-**---------------------
-** create a trie with every rooms in list
-** @param list
+**
+** @param root
+** @param str
 ** @return
 */
 
-t_trie		*gettrie(t_list *list)
+t_room		*getroom(t_trie *root, char *str)
 {
-	t_list		*buff;
-	t_trie		*root;
-	t_room		*current;
+	int 	key;
 
-	while (list)
+	if (!root || !str)
+		return (NULL);
+	while (*str)
 	{
-		buff = list;
-		current = list->content;
-		put_room(root, current, current->name);
-		list = list->next;
-		buff->content = NULL;
-		free(buff);
+		key = find_key(*str);
+		if (root->child[key])
+			root = root->child[key];
+		str++;
 	}
-	return (root);
+	if (root && root->room)
+		return (root->room);
+	return (NULL);
 }
 
+/*
+** Function : aff_trie
+**--------------------
+** print the name of every rooms in the trie
+** MY_APLHA : size of my used alphabet, countains alphanums char
+** @param root
+*/
 
+void		aff_trie(t_trie *root)
+{
+	int 	i;
+
+	i = 0;
+	while (i < MY_ALPHA)
+	{
+		if (root->child[i])
+			aff_trie(root->child[i]);
+		i++;
+	}
+	if (root->room)
+		dprintf(1, "%s\n", root->room->name);
+}
 
 
 

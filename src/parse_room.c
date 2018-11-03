@@ -14,68 +14,33 @@
 #include "../includes/lem_in.h"
 
 /*
-** Function : check_rooms
-**---------------------------
-** check the names of rooms to see if there is no duplicate
-** @param room
-** @param nb_room
-** @return
-*/
-
-bool		check_duplicate_rooms(t_room **room, int nb_room)
-{
-	bool	check;
-	int		i;
-	int		j;
-
-	i = 0;
-	check = true;
-	while (i < nb_room && check)
-	{
-		j = i + 1;
-		while (j < nb_room && check)
-		{
-			if (!ft_strcmp(R_NAME(i), R_NAME(j)))
-				check = false;
-			j++;
-		}
-		i++;
-	}
-	return (check);
-}
-
-/*
 ** Function : fill_room
 **-----------------------
+** i : -1 = end, 0 = room, 1 = start, 3 = tubes, 4 = comment, 5 = ants
+** create the rooms and the trie
 ** @param tab of the lines we GNLed
-** @param nb_room : number of room created
-** i : 0 = tubes,1 = room, 2 = start, 3 = end, 4 = comment, 5 = ants
-** @return the created tab of room
+** @return the trie
 */
 
-t_list		*fill_room(char **tab, int nb_rooms)
+t_trie			*fill_room(char **tab)
 {
-	t_list	*list;
-	t_list	*head;
+	t_trie	*root;
 	int		i;
 
-	i = 0;
-	if (!(list = ft_lstnew(NULL, 0)))
+	if (!(root = getnode()))
 		return (NULL);
-	head = list;
-	while (*tab && (i = check_which(*tab)))
+	while (*tab)
 	{
-		if (i == 1)
-			list->content = init_room2(*tab, 0);
-		else if (i == 2 && (tab = next_tab(tab)))
-			init_room(*tab, room, 1, --nb_rooms);
-		else if (i == 3 && (tab = next_tab(tab)))
-			init_room(*tab, room, -1, --nb_rooms);
+		i = check_which(*tab);
+		if ((i == 1 || i == -1) && (tab = next_tab(tab)))
+			init_room(*tab, i, root);
+		else if (!i)
+			init_room(*tab, i, root);
 		else if (i != 4 && i != 5)
 			break ;
 		tab++;
 	}
-	return (head);
+	return (root);
 }
 
 /*
@@ -117,36 +82,35 @@ char		**create_tab(void)
 ** Function : check_first_step
 **-----------------------------
 ** check if there is a good number of commands and rooms and ants
+** i : -1 = start, 0 = room, 1 = end, 3 = tubes, 4 = comment, 5 = ants
 ** @param tab
 ** @param ants
 ** @return the number of rooms or -1 if the first half of parsing is bad
 */
 
-int			check_first_step(char **tab, int *ants, int start)
+bool			check_first_step(char **tab, int *ants)
 {
 	int		end;
-	int		nb_room;
+	int		start;
 	int		i;
 
-	nb_room = 0;
 	end = 0;
+	start = 0;
 	if ((i = check_which(*tab)) != 5)
 		return (-1);
 	*ants = ft_atoi(*tab++);
-	while (i != -1 && *tab && (i = check_which(*tab)))
+	while (*tab)
 	{
-		if (i == 1)
-			nb_room++;
-		else if (i == 2)
+		i = check_which(*tab);
+		if (i == -1)
 			start++;
-		else if (i == 3)
+		else if (i == 1)
 			end++;
 		else if (i == 5)
 			i = -1;
-		else if (i != 4)
+		else if (i != 4 && i != 0)
 			break ;
 		tab++;
 	}
-	return ((end != 1 || start != 1 || i == -1) ? -1 : nb_room);
+	return ((end != 1 || start != 1 || i == -1) ? false : true);
 }
-
