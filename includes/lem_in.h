@@ -15,7 +15,6 @@
 # define LEM_IN_H
 
 # include "../libft/includes/libft.h"
-# include "def.h"
 # include <stdbool.h>
 # include <stdlib.h>
 

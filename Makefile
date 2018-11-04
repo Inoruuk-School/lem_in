@@ -35,10 +35,17 @@ NAME = lem_in
 CC = gcc
 CFLAGS = -Werror -Wall -Wextra
 POINTA = $(addprefix $(LIBFTDIR), libft.a)
-HEADERS = $(addprefix $(HEADERDIR), lem_in.h def.h)
+HEADERS = $(addprefix $(HEADERDIR), lem_in.h)
 
-FILESLEM = 	main parse_room room_tool solve tools tube_tools tube_parse\
-				tube_tools2
+FILESLEM = 	clean_tube\
+			main\
+			parse_room\
+			room_tool\
+			solver\
+			tools\
+			trie\
+			tube\
+			tube_tool
 
 SRCLEM = $(addprefix $(SRCDIR), $(addsuffix .c, $(FILESLEM)))
 OBJLEM = $(addprefix $(OBJDIR), $(addsuffix .o, $(FILESLEM)))
