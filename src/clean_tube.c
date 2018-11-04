@@ -28,7 +28,7 @@ t_tube		*del_tube(t_tube **head)
 	if ((*head)->bro)
 		buf = (*head)->bro;
 	ft_memdel((void **)&(*head));
-	return buf;
+	return (buf);
 }
 
 /*
@@ -40,7 +40,7 @@ t_tube		*del_tube(t_tube **head)
 ** @param head : data struct to clean
 */
 
-void 		clean_tube(t_tube	**head)
+void		clean_tube(t_tube **head)
 {
 	if ((*head)->bro)
 		clean_tube(&(*head)->bro);
@@ -74,24 +74,16 @@ bool		check_bro_status(t_tube *node)
 }
 
 /*
-** Function : free_tube
-**----------------------
-** @param root : data struct to free
+** Function : find_links
+**-----------------------
+** Search in tab which line is the first links
+** @param tab
+** @return : first line where the links are
 */
 
-void		free_tube(t_tube **root)
+char		**find_links(char **tab)
 {
-	t_tube	*head;
-
-	head = *root;
-	if (head->child)
-		free_tube(&head->child);
-	if (head->bro)
-		free_tube(&head->bro);
-	if (head->child && !head->child->child)
-		del_tube(&head->child);
-	if (head->bro && !head->bro->bro)
-		del_tube(&head->bro);
-	if (head->room->status == -1 && !head->bro && !head->child)
-		del_tube(&head);
+	while (*tab && !match(*tab, "*-*"))
+		tab++;
+	return (tab);
 }

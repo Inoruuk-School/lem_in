@@ -24,15 +24,15 @@
 
 int			find_key(char c)
 {
-	int 	key;
+	int		key;
 
-	key= -1;
+	key = -1;
 	if (ft_ismin(c))
-		key= c - 'a';
+		key = c - 'a';
 	else if (ft_iscap(c))
-		key= 26 + c - 'A';
+		key = 26 + c - 'A';
 	else if (ft_isdigit(c))
-		key= 52 + c - '0';
+		key = 52 + c - '0';
 	return (key);
 }
 
@@ -43,7 +43,7 @@ int			find_key(char c)
 ** @return : node or null if node failed to be created
 */
 
-t_trie			*getnode(void)
+t_trie		*getnode(void)
 {
 	t_trie		*node;
 
@@ -63,7 +63,7 @@ t_trie			*getnode(void)
 
 void		put_room(t_trie *root, t_room *room, char *name)
 {
-	int 	key;
+	int		key;
 
 	if (!*name && !root->room)
 	{
@@ -83,9 +83,10 @@ void		put_room(t_trie *root, t_room *room, char *name)
 		put_room(root->child[key], room, name);
 }
 
-
 /*
-**
+**Function : getroom
+**--------------------
+** in root search of the room whose name is str
 ** @param root
 ** @param str
 ** @return
@@ -93,7 +94,7 @@ void		put_room(t_trie *root, t_room *room, char *name)
 
 t_room		*getroom(t_trie *root, char *str)
 {
-	int 	key;
+	int		key;
 
 	if (!root || !str)
 		return (NULL);
@@ -119,7 +120,7 @@ t_room		*getroom(t_trie *root, char *str)
 
 void		aff_trie(t_trie *root)
 {
-	int 	i;
+	int		i;
 
 	i = 0;
 	while (i < MY_ALPHA)
@@ -131,16 +132,3 @@ void		aff_trie(t_trie *root)
 	if (root->room)
 		dprintf(1, "%s\n", root->room->name);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

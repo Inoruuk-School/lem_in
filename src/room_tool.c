@@ -92,7 +92,7 @@ bool		check_room(char *str)
 ** @param root : trie which will be filled with rooms
 */
 
-void		init_room(char *str, int status, t_trie *root)
+void		init_room(char *str, int status, t_trie *root, char **tab)
 {
 	char	**strtab;
 	t_room	*room;
@@ -100,8 +100,13 @@ void		init_room(char *str, int status, t_trie *root)
 
 	i = 0;
 	if (!(strtab = ft_strsplit(str, ' ')) ||\
-		!(room = ft_memalloc(sizeof(t_room))))
+			!(room = ft_memalloc(sizeof(t_room))))
 		exit(0);
+	if (!strtab[0] || !strtab[1] || !strtab[2])
+	{
+		free(room);
+		error("ERROR : bad room", tab, NULL, NULL);
+	}
 	room->status = status;
 	room->name = ft_strdup(strtab[0]);
 	room->coord_x = ft_atoi(strtab[1]);

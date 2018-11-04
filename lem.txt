@@ -16,8 +16,6 @@ mid2-start
 
 
 
-
-
 1
 ##start
 start 0 0
@@ -110,9 +108,14 @@ s-e
 1 1 1
 ##end
 2 2 2
-1-2
-
-
+3 3 3
+ 4 4 4
+ 5 5 5
+1-5
+5-2
+2-3
+2-4
+4-3
 
 
 
@@ -134,31 +137,27 @@ m1-m1
 
 
 
-test fait :
-rien
-	test foumri :
-pas de fourmi
-fourmi < 0 et tres grande negative et > a atoimax et == 0
-fourmi avec d autre character : espace, lettre et autres
-commentaire avant ants
-	test room :
-room normal
-room avec char special
-espace avant nom room
-comm entre commandes et room
-enleve 1 coord, 2 coord
-espace/tabulations apres coord et entre informations
-'L' avant nom room
-plusieurs rooms ayant le meme nom
-meme coord pour plusieurs room (pas une erreur)
-pas de ##start ou/et ##end
-	test link:
-'L'
-link avec room inexistante
-double
-room entre link
-boucle
-link entre meme room : m1-m1, end-end, etc
 
-AJOUT : tube_parse.c, ligne 160/161 verification pour erreur sur 1ere ligne de
-		link ou pas de link
+test:
+rien : ok
+pas de fourmi : ok
+fourmi < 0 et tres grande negative et > a atoimax et == 0 : ok
+fourmi avec d autre character : espace, lettre et autres : ok
+pas de comment avant ants : ok
+room normale : ok
+room avec non aplhanum char : ok
+espace avant/entre/apres room : ok
+pas de tab dans la declaration de salle : ok
+comment entre commande et rooms : ok
+ligne vide dans rooms : ok
+ligne vide dans links : ok
+0/1/2 coord : ok
+'L' dans room : ok
+doublon room : ok
+meme coord (pas une erreur) : ok
+pas de start ou end : ok
+'L' dans link : ok
+link avec room inexistante : ok
+doublon link : ok
+pas de link/ erreur sur le premier link : ok
+boucle : ok

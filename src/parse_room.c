@@ -22,21 +22,23 @@
 ** @return the trie
 */
 
-t_trie			*fill_room(char **tab)
+t_trie		*fill_room(char **tab)
 {
 	t_trie	*root;
+	char	**buff;
 	int		i;
 
+	buff = tab++;
 	if (!(root = getnode()))
 		return (NULL);
 	while (*tab)
 	{
 		i = check_which(*tab);
 		if ((i == 1 || i == -1) && (tab = next_tab(tab)))
-			init_room(*tab, i, root);
+			init_room(*tab, i, root, buff);
 		else if (!i)
-			init_room(*tab, i, root);
-		else if (i != 4 && i != 5)
+			init_room(*tab, i, root, buff);
+		else if (i != 4)
 			break ;
 		tab++;
 	}
@@ -88,7 +90,7 @@ char		**create_tab(void)
 ** @return the number of rooms or -1 if the first half of parsing is bad
 */
 
-bool			check_first_step(char **tab, int *ants)
+bool		check_first_step(char **tab, int *ants)
 {
 	int		end;
 	int		start;

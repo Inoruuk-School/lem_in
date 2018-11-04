@@ -37,6 +37,7 @@ t_tube		*make_tube(t_room *room)
 
 /*
 ** Function : make_bro
+**---------------------
 ** @param current
 ** @param room
 */
@@ -45,7 +46,7 @@ void		make_bro(t_tube *current, t_room *room)
 {
 	t_tube		*bro;
 
-	bro =current;
+	bro = current;
 	while (bro->bro != NULL)
 		bro = bro->bro;
 	bro->bro = make_tube(room);
@@ -70,7 +71,7 @@ void		check_links(char **tab, t_trie *root)
 			tab++;
 		if (!*tab)
 			break ;
-		if (*tab && **tab == 'L' && !(check = false))
+		if (*tab && **tab && **tab == 'L' && !(check = false))
 			**tab = '\0';
 		else if (*tab && (!match(*tab, "*-*") || !check_name3(*tab, root)))
 		{
@@ -104,35 +105,21 @@ bool		check_name3(char *str, t_trie *root)
 	if (!getroom(root, str) || !getroom(root, str2))
 		return (false);
 	str[str2 - str - 1] = '-';
-	return (true );
+	return (true);
 }
 
-void		duplicate_link2(char **split) // delete duplicate but doesnt delte 1-2 2-1 yet
-{
-	int i;
-	int j;
+/*
+** Function : duplicate_links
+**----------------------------
+** find and delete duplicate links in split
+** delete ONLY the 1-2/1-2 dup, not yet the 1-2/2-1 dup
+** @param split
+*/
 
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		while (split[i] && !split[i][0])
-			i++;
-		j = i + 1;
-		while (split[i] && split[j])
-		{
-			if (!ft_strcmp(split[i], split[j]))
-				split[j][0] = '\0';
-			j++;
-		}
-		i++;
-	}
-}
-
-void		duplicate_link(char **split) // delete duplicate but doesnt delte 1-2 2-1 yet
+void		del_dup_link(char **split)
 {
-	char 	**buff;
+	char	**buff;
+
 	if (!split)
 		return ;
 	while (*split)

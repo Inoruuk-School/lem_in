@@ -14,30 +14,21 @@
 #include "../includes/lem_in.h"
 
 /*
-** Function : exception
-**-----------------------
-** Used only when start and end are linked
-** @param end
-** @param ants
+** Function : aff_tab
+**--------------------
+** print each line in tab
+** @param tab
 */
 
-void	exception(char *end, int *ants)
+void	aff_tab(char **tab)
 {
-	int i;
-	int nb;
-
-	i = 1;
-	nb = *ants;
-	while (nb > 0)
+	while (*tab)
 	{
-		ft_printf("L%d-%s ", i++, end);
-		nb--;
+		ft_printf(RED"%s\n"RESET, *tab);
+		tab++;
 	}
-	write(0, "\n", 1);
-	*ants = nb;
+	ft_printf("\n");
 }
-
-
 
 int		main(void)
 {
@@ -50,9 +41,12 @@ int		main(void)
 	if (check_first_step(tab, &ants) <= 0 || ants <= 0)
 		error(ants > 0 ? "ERROR : bad room" : "ERROR : ants", tab, NULL, NULL);
 	root = fill_room(tab);
-	head = parse_tubes(tab, root);
+	head = parse_tubes(find_links(tab), root, find_end(tab));
+	if (head)
+		clean_tube(&head);
 	if (!is_solve2(head))
 		error("ERROR : can't solve", tab, &root, &head);
+	aff_tab(tab);
 	solver(head, &ants);
 	free_all(tab, &head, &root);
 	return (EXIT_SUCCESS);

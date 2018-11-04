@@ -14,28 +14,38 @@
 #include "../includes/lem_in.h"
 
 /*
-** Function : is_solve
-**---------------------
-** Look for starting room in head
-** @param head
-** @return : true if starting room found, false if not
+** Function : exception
+**-----------------------
+** Used only when start and end are linked
+** @param end
+** @param ants
 */
 
-bool	is_solve2(t_tube *head)
+void		exception(char *end, int *ants)
 {
-	if (!head)
-		return (NULL);
-	if (head->room->status == 1)
-		return (true);
-	if (head->child)
-		return (is_solve2(head->child));
-	if (head->bro)
-		return (is_solve2(head->bro));
-	return (false);
+	int i;
+	int nb;
 
+	i = 1;
+	nb = *ants;
+	while (nb > 0)
+	{
+		ft_printf("L%d-%s ", i++, end);
+		nb--;
+	}
+	write(0, "\n", 1);
+	*ants = nb;
 }
 
-t_tube	*is_ants(t_tube *node)
+/*
+** Function : is_ants
+**--------------------
+** search for ants in this node and it's brothers
+** @param node
+** @return
+*/
+
+t_tube		*is_ants(t_tube *node)
 {
 	if (!node)
 		return (NULL);
@@ -46,15 +56,25 @@ t_tube	*is_ants(t_tube *node)
 	return (NULL);
 }
 
-void 	send_ants2(t_tube *head, int *ants, int *received)
+/*
+** Function : send_ants
+**--------------------
+** Start pushing ants to the ending room, when there are no more ants to send
+** stop send_ants and start finish_ants
+** @param head
+** @param ants
+** @param received
+*/
+
+void		send_ants(t_tube *head, int *ants, int *received)
 {
-	static unsigned int 	nb = 0;
+	static unsigned	int		nb = 0;
 	t_tube					*buf;
 
 	buf = head->child;
 	while (*ants && !head->room->hantz && head->child && (buf = is_ants(buf)))
 	{
-		buf->room->status == 1 ? buf->nb = ++nb : nb; //
+		buf->room->status == 1 ? buf->nb = ++nb : nb;
 		head->room->hantz = !head->room->status ? true : head->room->hantz;
 		buf->room->hantz = !buf->room->status ? false : buf->room->hantz;
 		ft_swap(&(head->nb), &(buf->nb), sizeof(unsigned int));
@@ -63,12 +83,20 @@ void 	send_ants2(t_tube *head, int *ants, int *received)
 		ft_printf("L%d-%s ", head->nb, head->room->name);
 	}
 	if (head->bro)
-		send_ants2(head->bro, ants, received);
+		send_ants(head->bro, ants, received);
 	if (head->child)
-		send_ants2(head->child, ants, received);
+		send_ants(head->child, ants, received);
 }
 
-void 	finish_ants2(t_tube *head, int *received)
+/*
+** Function : finish_ants
+**------------------------
+** Push the remaining ants to the ending room
+** @param head
+** @param received
+*/
+
+void		finish_ants(t_tube *head, int *received)
 {
 	t_tube					*buf;
 
@@ -84,28 +112,39 @@ void 	finish_ants2(t_tube *head, int *received)
 		ft_printf("L%d-%s ", head->nb, head->room->name);
 	}
 	if (head->bro)
-		finish_ants2(head->bro, received);
+		finish_ants(head->bro, received);
 	if (head->child)
-		finish_ants2(head->child, received);
+		finish_ants(head->child, received);
 }
 
-void	solver(t_tube *head, int *ants)
+/*
+** Function : solver
+**------------------
+** First : look if the starting room is next to the ending room
+** if so -> exception, if not send every ants, then finish sending them
+** @param head
+** @param ants
+*/
+
+void		solver(t_tube *head, int *ants)
 {
-	int 	received;
+	int		received;
 	t_tube	*buf;
 
 	received = *ants;
 	if ((buf = is_ants(head->child)) && buf->room->status == 1)
 		exception(head->room->name, ants);
-	while (*ants > 0)
+	else
 	{
-		send_ants2(head, ants, &received);
-		write(1, "\n", 1);
-	}
-
-	while (received > 0)
-	{
-		finish_ants2(head, &received);
-		write(1, "\n", 1);
+		while (*ants > 0)
+		{
+			send_ants(head, ants, &received);
+			write(1, "\n", 1);
+		}
+		while (received > 0)
+		{
+			finish_ants(head, &received);
+			write(1, "\n", 1);
+		}
 	}
 }

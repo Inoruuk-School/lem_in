@@ -21,7 +21,7 @@
 ** @return
 */
 
-char 		*find_end(char **tab)
+char		*find_end(char **tab)
 {
 	while (*tab)
 	{
@@ -31,8 +31,6 @@ char 		*find_end(char **tab)
 	}
 	return (*next_tab(tab));
 }
-
-
 
 /*
 ** Function : getlinks
@@ -50,7 +48,7 @@ char 		*find_end(char **tab)
 
 t_tube		*getlinks(t_tube *head, t_trie *root, char **tab, char *str)
 {
-	char 		*buff;
+	char		*buff;
 
 	while (*tab)
 	{
@@ -88,7 +86,7 @@ t_tube		*getend(t_trie *root, char **tab, char *end)
 {
 	t_room		*endroom;
 	t_tube		*head;
-	char 		*buff;
+	char		*buff;
 
 	buff = ft_strchr(end, ' ');
 	*buff = '\0';
@@ -97,7 +95,7 @@ t_tube		*getend(t_trie *root, char **tab, char *end)
 	if (!head)
 		return (NULL);
 	head = getlinks(head, root, tab, endroom->name);
-	(void)tab;
+	*buff = ' ';
 	return (head);
 }
 
@@ -130,26 +128,19 @@ void		gittubes(t_tube *head, t_trie *root, char **tab)
 ** @return
 */
 
-t_tube		*parse_tubes(char **tab, t_trie *root)
+t_tube		*parse_tubes(char **tab, t_trie *root, char *end)
 {
 	char		**cpy;
-	char 		**buff;
-	char 		*end;
+	char		**buff;
 	t_tube		*head;
 
-	cpy = tab;
-	end = find_end(tab);
-	tab += 5;
-	while (*tab && !match(*tab, "*-*"))
-		tab++;
 	check_links(tab, root);
 	if (!*tab || !**tab)
-		error("ERROR: link error", cpy, NULL, NULL);
+		error("ERROR: link error", tab, NULL, NULL);
 	cpy = copy_tab(tab);
 	buff = cpy;
-	duplicate_link(cpy);
-	head = getend(root, cpy, end);
-	if (!head)
+	del_dup_link(cpy);
+	if (!(head = getend(root, cpy, end)))
 		error("ERROR: tube making error", cpy, NULL, NULL);
 	while (*cpy)
 	{
@@ -157,7 +148,6 @@ t_tube		*parse_tubes(char **tab, t_trie *root)
 			gittubes(head, root, cpy);
 		cpy++;
 	}
-	clean_tube(&head);
 	free_tab((void **)buff);
 	return (head);
 }

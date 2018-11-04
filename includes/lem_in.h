@@ -18,7 +18,9 @@
 # include "def.h"
 # include <stdbool.h>
 # include <stdlib.h>
+
 # define MY_ALPHA 62
+
 /*
 ** Struct t_room
 **----------------
@@ -41,11 +43,18 @@ typedef struct		s_room
 ** tree struct used to organize and search easily the rooms by their name
 */
 
-typedef struct 		s_trie
+typedef struct		s_trie
 {
 	struct s_trie	*child[62];
 	t_room			*room;
 }					t_trie;
+
+/*
+** Struct_t_tube
+**----------------
+** tree with unknow numbers of children for each nodes
+** first child is create and the others children are put in this child's bro
+*/
 
 typedef struct		s_tube
 {
@@ -55,12 +64,7 @@ typedef struct		s_tube
 	struct s_tube	*child;
 }					t_tube;
 
-/*
-** main
-*/
-
-void				error(char *str, char **tab, t_trie **root, t_tube **head);
-void				exception(char *end, int *ants);
+void				aff_tab(char **tab);
 
 /*
 ** parse_room.c
@@ -77,58 +81,63 @@ t_trie				*fill_room(char **tab);
 bool				check_room(char *str);
 char				**next_tab(char **tab);
 int					check_which(char *str);
-void				init_room(char *str, int status, t_trie *root);
+void				init_room(char *str, int status, t_trie *root, char **tab);
 
 /*
 ** trie.c
 */
 
-t_trie		*getnode(void);
-t_room		*getroom(t_trie *root, char *str);
-int 		find_key(char c);
-void		put_room(t_trie *root, t_room *room, char *name);
-void		aff_trie(t_trie *root);
+t_trie				*getnode(void);
+t_room				*getroom(t_trie *root, char *str);
+int					find_key(char c);
+void				put_room(t_trie *root, t_room *room, char *name);
+void				aff_trie(t_trie *root);
 
 /*
 ** tools.c
 */
 
+bool				is_solve2(t_tube *head);
+void				free_tube(t_tube **head);
+void				error(char *str, char **tab, t_trie **root, t_tube **head);
 void				free_trie(t_trie **root);
 void				free_all(char **tab, t_tube **head, t_trie **root);
 
 /*
-** new_tube.c
+** tube.c
 */
-char 		*find_end(char **tab);
-t_tube		*getlinks(t_tube *head, t_trie *root, char **tab, char *str);
-t_tube		*getend(t_trie *root, char **tab, char *end);
-void		gittubes(t_tube *head, t_trie *root, char **tab);
-t_tube		*parse_tubes(char **tab, t_trie *root);
+char				*find_end(char **tab);
+t_tube				*getlinks(t_tube *head, t_trie *root, char **tab, char *s);
+t_tube				*getend(t_trie *root, char **tab, char *end);
+void				gittubes(t_tube *head, t_trie *root, char **tab);
+t_tube				*parse_tubes(char **tab, t_trie *root, char *end);
 
 /*
-** new_tube_tool.c
+** tube_tool.c
 */
 
-t_tube		*make_tube(t_room *room);
-void		make_bro(t_tube *current, t_room *room);
-void		check_links(char **tab, t_trie *root);
-bool		check_name3(char *str, t_trie *root);
-void		duplicate_link(char **split);
+t_tube				*make_tube(t_room *room);
+void				make_bro(t_tube *current, t_room *room);
+void				check_links(char **tab, t_trie *root);
+bool				check_name3(char *str, t_trie *root);
+void				del_dup_link(char **split);
 /*
 ** clean_tube.c
 */
 
-void		free_tube(t_tube **head);
-void 		clean_tube(t_tube	**head);
-t_tube		*del_tube(t_tube **head);
-bool		check_bro_status(t_tube *node);
+void				clean_tube(t_tube	**head);
+t_tube				*del_tube(t_tube **head);
+bool				check_bro_status(t_tube *node);
+char				**find_links(char **tab);
 
 /*
-** solver2.c
+** solver.c
 */
-bool	is_solve2(t_tube *head);
-void 	send_ants2(t_tube *head, int *ants, int *received);
-void 	finish_ants2(t_tube *head, int *received);
-void	solver(t_tube *head, int *ants);
+
+void				exception(char *end, int *ants);
+t_tube				*is_ants(t_tube *node);
+void				send_ants(t_tube *head, int *ants, int *received);
+void				finish_ants(t_tube *head, int *received);
+void				solver(t_tube *head, int *ants);
 
 #endif
