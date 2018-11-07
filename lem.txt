@@ -22,6 +22,7 @@ mid-right
 right-right1
 right1-right2
 right2-end
+start-start
 
 
 
@@ -209,3 +210,4 @@ link avec room inexistante : ok
 doublon link : ok
 pas de link/ erreur sur le premier link : ok
 boucle : ok
+envoi mauvais fichier/dossier : ok

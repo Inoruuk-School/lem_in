@@ -128,20 +128,23 @@ void		gittubes(t_tube *head, t_trie *root, char **tab)
 ** @return
 */
 
-t_tube		*parse_tubes(char **tab, t_trie *root, char *end)
+t_tube		*parse_tubes(char **links, t_trie *root, char *end, char **tab)
 {
 	char		**cpy;
 	char		**buff;
 	t_tube		*head;
 
-	check_links(tab, root);
-	if (!*tab || !**tab)
+	check_links(links, root);
+	if (!*links || !**links)
 		error("ERROR: link error", tab, NULL, NULL);
-	cpy = copy_tab(tab);
+	cpy = copy_tab(links);
 	buff = cpy;
 	del_dup_link(cpy);
 	if (!(head = getend(root, cpy, end)))
+	{
+		free_tab((void **)cpy);
 		error("ERROR: tube making error", cpy, NULL, NULL);
+	}
 	while (*cpy && **cpy)
 	{
 		if (**cpy)

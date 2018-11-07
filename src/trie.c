@@ -103,9 +103,11 @@ t_room		*getroom(t_trie *root, char *str)
 		key = find_key(*str);
 		if (root->child[key])
 			root = root->child[key];
+		else if (!root->child[key])
+			break ;
 		str++;
 	}
-	if (root && root->room)
+	if (!*str && root && root->room)
 		return (root->room);
 	return (NULL);
 }

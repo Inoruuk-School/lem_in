@@ -81,7 +81,7 @@ void		send_ants(t_tube *head, int *ants, int *received)
 		*received = head->room->status == -1 ? *received - 1 : *received;
 		*ants = buf->room->status == 1 ? *ants - 1 : *ants;
 		if (buf->room->status == 1)
-			ft_printf(BLU"L%d-%s "RESET, head->nb, head->room->name);
+			ft_printf(GRN"L%d-%s "RESET, head->nb, head->room->name);
 		else if (head->room->status == -1)
 			ft_printf(YEL"L%d-%s "RESET, head->nb, head->room->name);
 		else

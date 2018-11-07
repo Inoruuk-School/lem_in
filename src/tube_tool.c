@@ -99,10 +99,15 @@ void		check_links(char **tab, t_trie *root)
 bool		check_name3(char *str, t_trie *root)
 {
 	char	*str2;
+	t_room	*r1;
+	t_room	*r2;
 
 	str2 = 1 + ft_strchr(str, '-');
 	str[str2 - str - 1] = '\0';
-	if (!getroom(root, str) || !getroom(root, str2))
+	if (!(r1 = getroom(root, str)) ||\
+		!(r2 = getroom(root, str2)))
+		return (false);
+	if (r1 == r2)
 		return (false);
 	str[str2 - str - 1] = '-';
 	return (true);

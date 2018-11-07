@@ -41,7 +41,7 @@ int		main(void)
 	if (check_first_step(tab, &ants) <= 0 || ants <= 0)
 		error(ants > 0 ? "ERROR : bad room" : "ERROR : ants", tab, NULL, NULL);
 	root = fill_room(tab);
-	head = parse_tubes(find_links(tab), root, find_end(tab));
+	head = parse_tubes(find_links(tab), root, find_end(tab), tab);
 	if (head)
 		clean_tube(&head);
 	if (!is_solve2(head))

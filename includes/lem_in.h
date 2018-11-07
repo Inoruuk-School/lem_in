@@ -109,7 +109,8 @@ char				*find_end(char **tab);
 t_tube				*getlinks(t_tube *head, t_trie *root, char **tab, char *s);
 t_tube				*getend(t_trie *root, char **tab, char *end);
 void				gittubes(t_tube *head, t_trie *root, char **tab);
-t_tube				*parse_tubes(char **tab, t_trie *root, char *end);
+t_tube				*parse_tubes(char **links, t_trie *root, char *end,\
+					char **tab);
 
 /*
 ** tube_tool.c
