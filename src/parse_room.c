@@ -71,7 +71,7 @@ char		**create_tab(void)
 		parsed = ft_strcat(ft_strcat(parsed, line), "|");
 		ft_strdel(&line);
 	}
-	if (line)
+	if (line && len)
 		free(line);
 	tab = ft_strsplit(parsed, '|');
 	free(parsed);

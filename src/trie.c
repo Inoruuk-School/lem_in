@@ -109,26 +109,3 @@ t_room		*getroom(t_trie *root, char *str)
 		return (root->room);
 	return (NULL);
 }
-
-/*
-** Function : aff_trie
-**--------------------
-** print the name of every rooms in the trie
-** MY_APLHA : size of my used alphabet, countains alphanums char
-** @param root
-*/
-
-void		aff_trie(t_trie *root)
-{
-	int		i;
-
-	i = 0;
-	while (i < MY_ALPHA)
-	{
-		if (root->child[i])
-			aff_trie(root->child[i]);
-		i++;
-	}
-	if (root->room)
-		dprintf(1, "%s\n", root->room->name);
-}

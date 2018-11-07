@@ -80,7 +80,12 @@ void		send_ants(t_tube *head, int *ants, int *received)
 		ft_swap(&(head->nb), &(buf->nb), sizeof(unsigned int));
 		*received = head->room->status == -1 ? *received - 1 : *received;
 		*ants = buf->room->status == 1 ? *ants - 1 : *ants;
-		ft_printf("L%d-%s ", head->nb, head->room->name);
+		if (buf->room->status == 1)
+			ft_printf(BLU"L%d-%s "RESET, head->nb, head->room->name);
+		else if (head->room->status == -1)
+			ft_printf(YEL"L%d-%s "RESET, head->nb, head->room->name);
+		else
+			ft_printf(RESET"L%d-%s ", head->nb, head->room->name);
 	}
 	if (head->bro)
 		send_ants(head->bro, ants, received);
@@ -109,7 +114,10 @@ void		finish_ants(t_tube *head, int *received)
 		buf->room->hantz = !buf->room->status ? false : buf->room->hantz;
 		ft_swap(&(head->nb), &(buf->nb), sizeof(unsigned int));
 		*received = head->room->status == -1 ? *received - 1 : *received;
-		ft_printf("L%d-%s ", head->nb, head->room->name);
+		if (head->room->status == -1)
+			ft_printf(YEL"L%d-%s "RESET, head->nb, head->room->name);
+		else
+			ft_printf(RESET"L%d-%s ", head->nb, head->room->name);
 	}
 	if (head->bro)
 		finish_ants(head->bro, received);

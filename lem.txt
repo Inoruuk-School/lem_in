@@ -1,3 +1,48 @@
+10
+##start
+start 0 0
+##end
+end 1 1
+mid 2 2
+mid1 3 3
+right 4 4
+right1 5 5
+right2 6 6
+left 7 7
+left1 8 8
+left2 9 9
+mid-start
+mid-mid1
+end-mid1
+start-left
+left-left1
+left1-left2
+left2-mid1
+mid-right
+right-right1
+right1-right2
+right2-end
+
+
+
+
+
+5
+##start
+s 1 1
+##end
+e 2 2
+m 1 1
+m1 1 1
+m2 1 1
+s-m
+m-m1
+m1-m2
+m2-e
+
+
+
+
 5
 ##start
 start 0 0
@@ -13,6 +58,9 @@ mid0-end
 end-mid1
 mid1-mid2
 mid2-start
+
+
+
 
 
 

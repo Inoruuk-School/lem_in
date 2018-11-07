@@ -57,7 +57,7 @@ t_tube		*getlinks(t_tube *head, t_trie *root, char **tab, char *str)
 		{
 			if ((buff = ft_strchr(*tab, '-')))
 				tab[0][buff++ - *tab] = '\0';
-			buff = !strcmp(buff, str) ? *tab : buff;
+			buff = !ft_strcmp(buff, str) ? *tab : buff;
 		}
 		if (buff)
 		{
@@ -142,11 +142,12 @@ t_tube		*parse_tubes(char **tab, t_trie *root, char *end)
 	del_dup_link(cpy);
 	if (!(head = getend(root, cpy, end)))
 		error("ERROR: tube making error", cpy, NULL, NULL);
-	while (*cpy)
+	while (*cpy && **cpy)
 	{
 		if (**cpy)
 			gittubes(head, root, cpy);
-		cpy++;
+		while (*cpy && !**cpy)
+			cpy++;
 	}
 	free_tab((void **)buff);
 	return (head);

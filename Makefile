@@ -11,7 +11,7 @@
 #                                                         /                   #
 #  ************************************************************************** #
 
-.PHONY = $(POINTA) all clean fclean re
+.PHONY = $(POINTA) lib all clean fclean re
 
 # **************************************************************************** #
 #																			   #
@@ -59,9 +59,9 @@ OBJS = $(OBJLEM)
 #																			   #
 # **************************************************************************** #
 
-all : $(NAME)
+all : lib $(NAME)
 
-$(NAME): $(POINTA) $(OBJDIR) $(OBJS)
+$(NAME): $(OBJDIR) $(OBJS) $(POINTA)
 	@printf "Compiling $(NAME)..."
 	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(POINTA)
 	@printf "\033[32m[OK]\033[0m\n"
@@ -69,7 +69,7 @@ $(NAME): $(POINTA) $(OBJDIR) $(OBJS)
 $(OBJDIR):
 	@mkdir $@
 
-$(POINTA): libft/
+lib:
 	@make -C $(LIBFTDIR)
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(HEADERS)

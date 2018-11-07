@@ -24,6 +24,8 @@ void		free_tube(t_tube **root)
 	t_tube	*head;
 
 	head = *root;
+	if (!head)
+		return ;
 	if (head->child)
 		free_tube(&head->child);
 	if (head->bro)
