@@ -3,7 +3,7 @@
 start 0 0
 ##end
 end 1 1
-mid 2 2
+mid| 2 2
 mid1 3 3
 right 4 4
 right1 5 5
@@ -11,6 +11,7 @@ right2 6 6
 left 7 7
 left1 8 8
 left2 9 9
+start-start
 mid-start
 mid-mid1
 end-mid1
@@ -22,7 +23,6 @@ mid-right
 right-right1
 right1-right2
 right2-end
-start-start
 
 
 
@@ -36,10 +36,9 @@ e 2 2
 m 1 1
 m1 1 1
 m2 1 1
-s-m
 m-m1
 m1-m2
-m2-e
+m1-e
 
 
 

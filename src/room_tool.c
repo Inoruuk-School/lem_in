@@ -71,15 +71,15 @@ bool		check_room(char *str)
 	if (!(tab = ft_strsplit(str, ' ')))
 		exit(0);
 	if (!tab[0] || !tab[1] || !tab[2])
+	{
+		free_tab((void **)tab);
 		return (false);
+	}
 	if (!check_ifalphanum(tab[0]) || tab[0][0] == 'L' || tab[0][0] == '#')
 		check = false;
 	if (!check_ifdigit(tab[1]) && !check_ifdigit(tab[2]))
 		check = false;
-	ft_strdel(&tab[0]);
-	ft_strdel(&tab[1]);
-	ft_strdel(&tab[2]);
-	free(tab);
+	free_tab((void **)tab);
 	return (check);
 }
 

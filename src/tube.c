@@ -96,6 +96,11 @@ t_tube		*getend(t_trie *root, char **tab, char *end)
 		return (NULL);
 	head = getlinks(head, root, tab, endroom->name);
 	*buff = ' ';
+	if (head->room->status == -1 && !head->child)
+	{
+		free_tube(&head);
+		return (NULL);
+	}
 	return (head);
 }
 
@@ -136,14 +141,14 @@ t_tube		*parse_tubes(char **links, t_trie *root, char *end, char **tab)
 
 	check_links(links, root);
 	if (!*links || !**links)
-		error("ERROR: link error", tab, NULL, NULL);
+		error("ERROR: link error", tab, &root, NULL);
 	cpy = copy_tab(links);
 	buff = cpy;
 	del_dup_link(cpy);
 	if (!(head = getend(root, cpy, end)))
 	{
 		free_tab((void **)cpy);
-		error("ERROR: tube making error", cpy, NULL, NULL);
+		error("ERROR: tube making error", tab, &root, NULL);
 	}
 	while (*cpy && **cpy)
 	{
