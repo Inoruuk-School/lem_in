@@ -115,8 +115,10 @@ t_tube		*getend(t_trie *root, char **tab, char *end)
 
 void		gittubes(t_tube *head, t_trie *root, char **tab)
 {
+	while (!**tab && *(tab + 1))
+		tab++;
 	if (!head->child && head->room->status != 1)
-		getlinks(head, root, tab++, head->room->name);
+		getlinks(head, root, tab, head->room->name);
 	if (head->bro)
 		gittubes(head->bro, root, tab);
 	if (head->child)

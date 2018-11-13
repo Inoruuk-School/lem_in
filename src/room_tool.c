@@ -32,7 +32,7 @@ char		**next_tab(char **tab)
 ** Function check_which
 **---------------------
 ** @param str given string to check
-** @return -1 = end, 0 = room, 1 = start, 3 = tubes, 4 = comment, 5 = ants
+** @return -1 = ##end, 0 = room, 1 = ##start, 3 = tubes, 4 = comment, 5 = ants
 */
 
 int			check_which(char *str)
