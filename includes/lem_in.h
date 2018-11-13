@@ -18,7 +18,6 @@
 # include <stdbool.h>
 # include <stdlib.h>
 
-
 # define MY_ALPHA 62
 
 /*
