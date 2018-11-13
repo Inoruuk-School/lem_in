@@ -109,8 +109,6 @@ void		init_room(char *str, int status, t_trie *root, char **tab)
 	}
 	room->status = status;
 	room->name = ft_strdup(strtab[0]);
-	room->coord_x = ft_atoi(strtab[1]);
-	room->coord_y = ft_atoi(strtab[2]);
 	room->hantz = status == 1 ? true : false;
 	while (strtab[i])
 		free(strtab[i++]);

@@ -33,7 +33,7 @@ OBJALL = $(OBJDIR)
 
 NAME = lem_in
 CC = gcc
-CFLAGS = -Werror -Wall -Wextra
+CFLAGS = -Werror -Wall -Wextra -g -o2
 POINTA = $(addprefix $(LIBFTDIR), libft.a)
 HEADERS = $(addprefix $(HEADERDIR), lem_in.h)
 

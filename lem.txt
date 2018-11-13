@@ -3,7 +3,7 @@
 start 0 0
 ##end
 end 1 1
-mid| 2 2
+mid 2 2
 mid1 3 3
 right 4 4
 right1 5 5
@@ -11,7 +11,6 @@ right2 6 6
 left 7 7
 left1 8 8
 left2 9 9
-start-start
 mid-start
 mid-mid1
 end-mid1
@@ -54,6 +53,7 @@ mid0 4 4
 mid1 5 5
 mid2 6 6
 start-mid0
+end-dead0
 mid0-end
 end-mid1
 mid1-mid2
@@ -129,7 +129,17 @@ e21 0 0
 s1 1 1
 s2 2 2
 s3 3 3
-
+e-s1
+gdsgdfz
+s1-s
+#
+#
+#
+#
+#
+#
+#
+#
 
 
 
@@ -210,3 +220,5 @@ doublon link : ok
 pas de link/ erreur sur le premier link : ok
 boucle : ok
 envoi mauvais fichier/dossier : ok
+valgrind dans tout les cas d erreur : ok
+comment entre link : ok

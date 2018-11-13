@@ -18,6 +18,7 @@
 # include <stdbool.h>
 # include <stdlib.h>
 
+
 # define MY_ALPHA 62
 
 /*
@@ -31,8 +32,6 @@ typedef struct		s_room
 {
 	int				status : 2;
 	bool			hantz;
-	int				coord_x;
-	int				coord_y;
 	char			*name;
 }					t_room;
 
@@ -90,7 +89,6 @@ t_trie				*getnode(void);
 t_room				*getroom(t_trie *root, char *str);
 int					find_key(char c);
 void				put_room(t_trie *root, t_room *room, char *name);
-void				aff_trie(t_trie *root);
 
 /*
 ** tools.c
